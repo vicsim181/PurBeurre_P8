@@ -1,0 +1,32 @@
+{
+    "categories": [
+        "fromage",
+        "yaourt",
+        "fromage de vache",
+        "fromage de chevre",
+        "fromage bleu",
+        "fromage tome",
+        "camembert",
+        "roquefort",
+        "yaourt nature",
+        "yaourt aux fruits",
+        "yaourt soja",
+        "glace chocolat",
+        "glace vanille",
+        "glace sorbet fruit",
+        "biscuit",
+        "biscuit chocolat",
+        "biscuit beurre",
+        "biscuit fruits",
+        "soda",
+        "soda cola",
+        "limonade",
+        "soda fruits",
+        "charcuterie",
+        "jambon",
+        "saucisson"],
+    "page_size": 50,
+    "page": 1,
+    "fields": [
+        "code,product_name,nutriscore_grade,ingredients_text,url,stores_tags,unique_scans_n"]
+}

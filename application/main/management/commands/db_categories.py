@@ -7,7 +7,7 @@ class Command(BaseCommand):
     help = 'Create the categories in the main_category table.'
 
     def handle(self, *args, **options):
-        with open('main/management/commands/categories.json', 'r') as categories:
+        with open('main/management/commands/settings.json', 'r') as categories:
             data = json.load(categories)
         for category_name in data['categories']:
             try:
