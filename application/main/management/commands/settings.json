@@ -1,7 +1,14 @@
 {
-    "categories": [
+    "categories_main": [
         "fromage",
         "yaourt",
+        "glace chocolat",
+        "glace vanille",
+        "glace sorbet fruit",
+        "biscuit",
+        "soda",
+        "charcuterie"],
+    "categories_sub": [
         "fromage de vache",
         "fromage de chevre",
         "fromage bleu",
@@ -11,22 +18,16 @@
         "yaourt nature",
         "yaourt aux fruits",
         "yaourt soja",
-        "glace chocolat",
-        "glace vanille",
-        "glace sorbet fruit",
-        "biscuit",
         "biscuit chocolat",
         "biscuit beurre",
         "biscuit fruits",
-        "soda",
         "soda cola",
         "limonade",
         "soda fruits",
-        "charcuterie",
         "jambon",
-        "saucisson"],
-    "page_size": 50,
-    "page": 1,
+        "saucisson"],    
+    "page_size_main": 300,
+    "page_size_sub": 70,
     "fields": [
         "code,product_name,nutriscore_grade,ingredients_text,url,stores_tags,unique_scans_n"]
 }
