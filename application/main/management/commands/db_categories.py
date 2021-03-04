@@ -10,11 +10,11 @@ class Command(BaseCommand):
         with open('main/management/commands/settings.json', 'r') as categories:
             data = json.load(categories)
         for category_name in data['categories_main']:
-            self.create_categories(category_name)
+            self.create_category(category_name)
         for category_name in data['categories_sub']:
-            self.create_categories(category_name)
+            self.create_category(category_name)
 
-    def create_categories(self, category_name):
+    def create_category(self, category_name):
         try:
             print(category_name)
             category = Category(name=category_name)

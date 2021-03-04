@@ -53,12 +53,10 @@ class Command(BaseCommand):
             print('NOUVELLE REQUETE: ' + r.url)
             result = r.json()
         except json.decoder.JSONDecodeError:
-            print('The json file returned from Open Food Facts is empty! It can be due to a HTTP error, \
+            raise Exception('The json file returned from Open Food Facts is empty! It can be due to a HTTP error, \
 check the url passed in requests and its parameters.')
-            exit()
         except requests.exceptions.ConnectionError:
-            print('A connection error occured')
-            exit()
+            raise Exception('A connection error occured')
         raw_products = result['products']
         for raw_product in raw_products:
             self.treat_data(raw_product, category)
