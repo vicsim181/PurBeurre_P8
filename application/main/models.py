@@ -26,10 +26,13 @@ class Product(models.Model):
     url = models.CharField(max_length=200)
     store = models.ManyToManyField(Store)
     popularity = models.IntegerField()
-    category = models.ManyToManyField(Category, on_delete=CASCADE)
+    category = models.ManyToManyField(Category)
 
     def __str__(self) -> str:
         return 'product: ' + self.name
+
+    def search_product(self):
+        pass
 
 
 class History(models.Model):

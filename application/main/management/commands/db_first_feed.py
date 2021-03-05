@@ -24,21 +24,20 @@ class Command(BaseCommand):
             page = last_page.page_number + 1
         except ObjectDoesNotExist:
             page = 1
-        print('page: ' + str(page))
         categories = Category.objects.all()
         if not categories:
             print('The main_category table is empty, please feed it first to extract the categories.')
             return
         with open('main/management/commands/settings.json', 'r') as settings:
-            data = json.load(settings)
+            self.data = json.load(settings)
         self.url = "https://fr.openfoodfacts.org/cgi/search.pl?json=1"
         for category in categories:
-            if category.name in data["categories_main"]:
-                self.parameters = {'search_terms': category.name, 'page_size': data['page_size_main'], 'page': page,
-                                   'fields': data['fields']}
-            elif category.name in data["categories_sub"]:
-                self.parameters = {'search_terms': category.name, 'page_size': data['page_size_sub'], 'page': page,
-                                   'fields': data['fields']}
+            if category.name in self.data["categories_main"]:
+                self.parameters = {'search_terms': category.name, 'page_size': self.data['page_size_main'],
+                                   'page': page, 'fields': self.data['fields']}
+            elif category.name in self.data["categories_sub"]:
+                self.parameters = {'search_terms': category.name, 'page_size': self.data['page_size_sub'], 'page': page,
+                                   'fields': self.data['fields']}
             self.extract_data(category)
         history = History(page_number=page)
         history.save()
@@ -50,7 +49,6 @@ class Command(BaseCommand):
         """
         try:
             r = requests.get(url=self.url, params=self.parameters)
-            print('NOUVELLE REQUETE: ' + r.url)
             result = r.json()
         except json.decoder.JSONDecodeError:
             raise Exception('The json file returned from Open Food Facts is empty! It can be due to a HTTP error, \
@@ -75,26 +73,24 @@ check the url passed in requests and its parameters.')
                               popularity=raw_product['unique_scans_n'])
             product.save()
             if raw_product['stores_tags']:
-                stores = [store.replace('-', ' ') for store in raw_product['stores_tags']]
+                stores = [store.lower() for store in raw_product['stores_tags']]
                 if stores:
                     for store_element in stores:
-                        try:
-                            store = Store(name=store_element)
-                            store.save()
-                            product.store.add(store)
-                            print('DONE: ' + store.name)
-                        except DataError:
-                            print('STORE DATAERROR')
-                        except IntegrityError:
-                            store = Store.objects.get(name=store_element)
-                            product.store.add(store)
+                        if store_element in self.data['stores'].keys():
+                            try:
+                                store = Store(name=self.data['stores'][store_element])
+                                store.save()
+                                product.store.add(store)
+                            except DataError:
+                                pass
+                            except IntegrityError:
+                                store = Store.objects.get(name=self.data['stores'][store_element])
+                                product.store.add(store)
             product.category.add(category)
-            print('DONE: ' + product.name)
         except KeyError:
-            print('KEYERROR')
+            pass
         except DataError:
-            print('DATAERROR')
+            pass
         except IntegrityError:
-            print('DEJA DANS BDD ' + raw_product['product_name'])
             product = Product.objects.get(code=raw_product['code'])
             product.category.add(category)

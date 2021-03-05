@@ -1,0 +1,14 @@
+.results {
+    display: flex;
+    flex-direction: column;
+    flex-basis: auto;
+    color: black;
+}
+
+.one {
+    flex: 1 1 auto;
+}
+
+.two {
+    flex: 1 1 auto;
+}

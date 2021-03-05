@@ -2,16 +2,17 @@
 
 {% block content %}
 
-<header class="masthead">
-    <div class="container h-100">
-        <h1 class="text-uppercase text-white font-weight-bold" style="color: black;">Résultats</h1>
+{% load static %}
+<link rel="stylesheet" href="{% static 'main/style_results.css' %}">
+<div class="page-section results">
+    <div class="one">
+        <h1 class="results">Résultats</h1>
     </div>
-</header>
-<section class="page-section" id="results">
-    <div class="container">
-        <p class="text-white-75 font-weight-light mb-5" style="color: black;">Bientôt les résultats</p>
+    <div class="two">
+        <p class="results">Bientôt les résultats</p>
     </div>
-</section>
+</div>
+
 
 
 

@@ -29,5 +29,24 @@
     "page_size_main": 300,
     "page_size_sub": 70,
     "fields": [
-        "code,product_name,nutriscore_grade,ingredients_text,url,stores_tags,unique_scans_n"]
+        "code,product_name,nutriscore_grade,ingredients_text,url,stores_tags,unique_scans_n"],
+    "stores": {
+        "auchan": "Auchan",
+        "carrefour": "Carrefour",
+        "magasin-u": "Magasins U",
+        "magasins-u": "Magasins U",
+        "magasin u": "Magasins U",
+        "magasins u": "Magasins U",
+        "hyper-u": "Hyper U",
+        "hyper u": "Hyper U",
+        "super-u": "Super U",
+        "super u": "Super U",
+        "franprix": "Franprix",
+        "monoprix": "Monoprix",
+        "leclerc": "E-Leclerc",
+        "lidl": "Lidl",
+        "aldi": "Aldi",
+        "cora": "Cora",
+        "naturalia": "Naturalia"
+    }
 }
