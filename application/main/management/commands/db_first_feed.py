@@ -2,6 +2,7 @@ from django.db.utils import DataError
 import requests
 import json
 import pprint
+import re
 from django.core.management.base import BaseCommand
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
@@ -11,6 +12,22 @@ from main.models import Category, Product, Store, History
 class Command(BaseCommand):
     help = 'Collect all the categories present in the category table of the database.\
             It then collects the data according to these categories via the OFF API.'
+
+    DICT_STORES = {
+        r'auchan': "Auchan",
+        r'(magasins?|hyper|super)[- ]u': "Magasins U",
+        r'carrefour.*': "Carrefour",
+        r'leclerc': "E-Leclerc",
+        r'intermarche': "Intermarché",
+        r'cora': "Cora",
+        r'lidl': "Lidl",
+        r'aldi': "Aldi",
+        r'monoprix': "Monoprix",
+        r'picard': "Picard",
+        r'franprix': "Franprix",
+        r'casino': "Casino",
+        r'naturalia': "Naturalia"
+    }
 
     def handle(self, *args, **options):
         """
@@ -64,6 +81,7 @@ check the url passed in requests and its parameters.')
         Function that inserts a new product in the database if it's not already in.
         It also adds links between products and their categories and stores.
         """
+        dict = Command.DICT_STORES
         try:
             product = Product(code=raw_product['code'],
                               name=raw_product['product_name'],
@@ -72,20 +90,21 @@ check the url passed in requests and its parameters.')
                               url=raw_product['url'],
                               popularity=raw_product['unique_scans_n'])
             product.save()
-            if raw_product['stores_tags']:
-                stores = [store.lower() for store in raw_product['stores_tags']]
-                if stores:
-                    for store_element in stores:
-                        if store_element in self.data['stores'].keys():
+            if "stores_tags" in raw_product:
+                for store_element in raw_product['stores_tags']:
+                    store = None
+                    for regex in dict:
+                        if bool(re.search(regex, store_element, flags=re.I)):
                             try:
-                                store = Store(name=self.data['stores'][store_element])
+                                store = Store(name=dict[regex])
                                 store.save()
-                                product.store.add(store)
                             except DataError:
                                 pass
                             except IntegrityError:
-                                store = Store.objects.get(name=self.data['stores'][store_element])
-                                product.store.add(store)
+                                store = Store.objects.get(name=dict[regex])
+                    if not store:
+                        store = Store.objects.get(id=1)
+                    product.store.add(store)
             product.category.add(category)
         except KeyError:
             pass
