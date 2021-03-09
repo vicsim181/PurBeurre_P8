@@ -9,7 +9,14 @@
         <h1 class="results">Résultats</h1>
     </div>
     <div class="two">
-        <p class="results">Bientôt les résultats</p>
+        {% if product %}
+            <p class="results">Nom du produit: {{ product.name }}</p>
+            <p class="results">Code barre: {{ product.code }}</p>
+            <p class="results">Ingrédients: {{ product.description }}</p>
+            <p class="results">url: {{ product.url }}</p>
+        {% else %}
+            <p class="results">Pas de produit à afficher</p>
+        {% endif %}
     </div>
 </div>
 

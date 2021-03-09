@@ -61,3 +61,23 @@
   });
 
 })(jQuery); // End of use strict
+
+// function treatInput(inputToTreat) {
+//     let specCar = ['{', '}', '<', '>', '&', '/']
+//     for (let cars = 0; cars < inputToTreat.length; cars++) {
+//         if (specCar.indexOf(inputToTreat[cars]) !== -1) {
+//             inputToTreat = inputToTreat.replace(inputToTreat[cars], '');
+//         };
+//     };
+//     return inputToTreat;
+// }
+
+
+$('#button_2').on('click', ()=> {
+  message = $('#request_form').val();
+    if (message)  {
+      console.log(message)
+      $('#request_form').val("");
+      return $.get(`http://127.0.0.1:8000/results/`);
+    }
+})

@@ -1,6 +1,7 @@
 from pprint import pprint
 from django.db import models
 from django.utils import timezone
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 
 # Create your models here.
 
@@ -32,10 +33,12 @@ class Product(models.Model):
     def __str__(self) -> str:
         return 'product: ' + self.name
 
-    # def retrieve_product(cls, request):
-    #     products = Product.objects.filter(name__icontains=request)
-    #     pprint.pprint(products)
-    #     # return product.code
+    def retrieve_product(request):
+        vector = SearchVector('name')
+        query = SearchQuery(request)
+        winner = Product.objects.annotate(rank=SearchRank(vector, query)).order_by('-rank')[0]
+        if winner:
+            return winner
 
 
 class History(models.Model):
