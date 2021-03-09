@@ -1,3 +1,4 @@
+from pprint import pprint
 from django.db import models
 from django.utils import timezone
 
@@ -31,8 +32,10 @@ class Product(models.Model):
     def __str__(self) -> str:
         return 'product: ' + self.name
 
-    def search_product(self):
-        pass
+    # def retrieve_product(cls, request):
+    #     products = Product.objects.filter(name__icontains=request)
+    #     pprint.pprint(products)
+    #     # return product.code
 
 
 class History(models.Model):

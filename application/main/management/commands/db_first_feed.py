@@ -84,7 +84,7 @@ check the url passed in requests and its parameters.')
         dict = Command.DICT_STORES
         try:
             product = Product(code=raw_product['code'],
-                              name=raw_product['product_name'],
+                              name=raw_product['product_name'].lower(),
                               nutriscore=raw_product['nutriscore_grade'],
                               description=raw_product['ingredients_text'],
                               url=raw_product['url'],
