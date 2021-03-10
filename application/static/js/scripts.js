@@ -73,11 +73,11 @@
 // }
 
 
-$('#button_2').on('click', ()=> {
-  message = $('#request_form').val();
-    if (message)  {
-      console.log(message)
-      $('#request_form').val("");
-      return $.get(`http://127.0.0.1:8000/results/`);
-    }
-})
+// $('#button_2').on('click', ()=> {
+//   message = $('#request_form').val();
+//     if (message)  {
+//       console.log(message)
+//       $('#request_form').val("");
+//       return $.get(`http://127.0.0.1:8000/results/`);
+//     }
+// })

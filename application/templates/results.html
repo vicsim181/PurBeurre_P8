@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'style_results.css' %}">
+<div class="page-section results">
+    <div class="one">
+        <h1 class="results">Résultats</h1>
+    </div>
+    <div class="two">
+        {% if product %}
+            <p class="results">Nom du produit: {{ product.name }}</p>
+            <p class="results">Nutriscore: {{ product.nutriscore }}</p>
+            <p class="results">Code barre: {{ product.code }}</p>
+            <p class="results">Ingrédients: {{ product.description }}</p>
+            <p class="results">url: {{ product.url }}</p>
+            <p class="results">Catégorie:
+                {% for category in product.category.all %}
+                    {{ category.name }},
+                {% endfor %}
+            </p>
+        {% else %}
+            <p class="results">Pas de produit à afficher</p>
+        {% endif %}
+    </div>
+    <div class="three">
+        {% if suggestions %}
+            {% for suggestion in suggestions %}
+                <div>
+                    <p class="results">{{ suggestion.name }}</p>
+                    <p class="results">{{ suggestion.nutriscore }}</p>
+                    <p class="results">{{ suggestion.description }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

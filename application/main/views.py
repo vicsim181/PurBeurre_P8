@@ -1,25 +1,30 @@
-from django.shortcuts import get_object_or_404, render
+# from application.main.models import Category
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
-from main.models import Product
 from django.views.decorators.http import require_http_methods
+from django.views.generic import TemplateView
+from main.forms import HomeForm
+from main.models import Product
 
 
 # Create your views here.
-def index(request):
-    return render(request, 'main/index.html')
+class HomeView(TemplateView):
+    template_name = 'index.html'
+
+    def get(self, request):
+        form = HomeForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = HomeForm(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data['post']
+            form = HomeForm()
+            product, category = Product.retrieve_product(text)
+            suggestions = Product.generate_suggestions(category, product)
+            return render(request, 'results.html', {'product': product, 'category': category,
+                          'suggestions': suggestions})
 
 
-@require_http_methods(["GET"])
-def results(request):
-    # product = Product.retrieve_product(input)
-    # context = {'product': product}
-    # print(product)
-    return render(request, 'main/results.html')
-
-
-def detail(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    context = {'product': product}
-    # response = f' product: {product.name}\n description: {product.description}\n url: {product.url}'
-    # return HttpResponse(response)
-    return render(request, 'main/results.html', context)
+class ResultsView(TemplateView):
+    template_name = 'results.html'

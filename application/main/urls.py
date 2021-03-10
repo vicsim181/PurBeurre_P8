@@ -1,8 +1,7 @@
 from django.urls import path
-from . import views
+from .views import HomeView, ResultsView
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('/results/', views.results, name='results'),
-    path('<int:product_id>', views.detail, name='detail'),
+    path('', HomeView.as_view()),
+    path('results/<str:input>', ResultsView.as_view()),
 ]
