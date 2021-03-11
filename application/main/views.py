@@ -21,7 +21,10 @@ class HomeView(TemplateView):
             text = form.cleaned_data['post']
             form = HomeForm()
             product, category = Product.retrieve_product(text)
-            suggestions = Product.generate_suggestions(category, product)
+            if product:
+                suggestions = Product.generate_suggestions(category, product)
+            else:
+                suggestions = None
             return render(request, 'results.html', {'product': product, 'category': category,
                           'suggestions': suggestions})
 

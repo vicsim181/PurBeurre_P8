@@ -10,7 +10,7 @@
     </div>
     <div class="two">
         {% if product %}
-            <p class="results">Nom du produit: {{ product.name }}</p>
+            <p class="results">Nom du produit: {{ product.name.title }}</p>
             <p class="results">Nutriscore: {{ product.nutriscore }}</p>
             <p class="results">Code barre: {{ product.code }}</p>
             <p class="results">Ingrédients: {{ product.description }}</p>
@@ -25,14 +25,18 @@
         {% endif %}
     </div>
     <div class="three">
-        {% if suggestions %}
+        {% if suggestions and suggestions != 0 %}
             {% for suggestion in suggestions %}
                 <div>
-                    <p class="results">{{ suggestion.name }}</p>
+                    <p class="results">{{ suggestion.name.title }}</p>
                     <p class="results">{{ suggestion.nutriscore }}</p>
                     <p class="results">{{ suggestion.description }}</p>
                 </div>
             {% endfor %}
+        {% elif suggestions == 0 %}
+                <div>
+                    <p class="results">Je ne trouve pas d'aliment plus sain dans la même catégorie...</p>
+                </div>
         {% endif %}
     </div>
 </div>

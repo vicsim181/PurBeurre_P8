@@ -34,49 +34,94 @@ class Product(models.Model):
         return 'product: ' + self.name
 
     def retrieve_product(request):
-        vector = SearchVector('name')
-        query = SearchQuery(request)
-        winner = Product.objects.annotate(rank=SearchRank(vector, query)).order_by('-rank')[0]
-        category = Category.objects.filter(product__id=winner.id)
-        if winner:
-            return winner, category
+        # vector = SearchVector('name')
+        # query = SearchQuery(request)
+        # winner = Product.objects.annotate(rank=SearchRank(vector, query)).order_by('-rank')[0]
+        # if winner:
+        #     return winner, category
+        scores = {}
+        nb_words_request = len(request.split(' '))
+        products = Product.objects.annotate(search=SearchVector('name')).filter(search=request)
+        print(products)
+        if products:
+            for product in products:
+                score = 0
+                string_product = product.name.replace('-', ' ').split(' ')
+                for word in string_product:
+                    if word.lower() in request.lower():
+                        score += 1
+                score_final = round((score/nb_words_request) * 100)
+                print('SCORE 1: ' + str(score_final))
+                if score_final >= 100:
+                    score_final_2 = round((score/len(string_product)) * 100)
+                    print('SCORE 2: ' + str(score_final_2))
+                    score_final = (100 + score_final_2) / 2
+                print('product: ' + str(string_product) + '   request: ' + request + ' nb_words_request ' + str(nb_words_request))
+                print(score_final)
+                scores[score_final] = product.code
+            print(scores)
+            if scores:
+                max = 0
+                for key in scores:
+                    if key > max:
+                        max = key
+                winner = Product.objects.get(code=scores[max])
+                category = Category.objects.filter(product__id=winner.id)
+                return winner, category
+        else:
+            return None, None
 
     def looking_for_suggestion(winner_code, target_nutriscore, categories, j):
         """
         Function looking for the suggestions in the chosen category.
         """
+        print('BEGIN LOOKING FOR SUGGESTION')
+        # print('CATEGORIES: ' + str(categories))
+        # print('NUTRI: ' + target_nutriscore)
         results = Product.objects.filter(category=categories[j].id, nutriscore=target_nutriscore)
-        nb = []
-        for element in results:
-            nb.append(element.code)
-        if winner_code in nb:
-            nb.remove(winner_code)
-        print('NB LOOKING FOR: ' + str(nb))
+        nb = [element for element in results]
+        nb.remove(winner_code) if winner_code in nb else None
         return nb
 
     def generate_suggestions(categories, winner):
         """
         Function formating and generating the chosen suggestions.
         """
+        print("BEGIN GENERATE_SUGGESTION")
         nutri = ['a', 'b', 'c', 'd', 'e']
         pre_suggestions = []
         i = 0
-        j = 1
+        len_cat = len(categories)
+        if len_cat == 1:
+            j = 0
+        elif len_cat == 2:
+            j = 1
         while len(pre_suggestions) < 6:
+            print('WINNER NUTRI: ' + winner.nutriscore + '    NUTRI TARGET: ' + nutri[0+i])
             if winner.nutriscore == nutri[0 + i]:
-                j, i = 0, 0
+                if len_cat == 1:
+                    # print(pre_suggestions)
+                    if pre_suggestions != []:
+                        if len(pre_suggestions) < 6:
+                            suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions[:len(pre_suggestions)]]
+                        else:
+                            suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions[:6]]
+                        return suggestions
+                    else:
+                        return None
+                else:
+                    j, i = 0, 0
+            print('I J: ' + str(i) + ' ' + str(j))
             results = Product.looking_for_suggestion(winner.code, nutri[0 + i], categories, j)
             for element in results:
                 pre_suggestions.append(element)
             i += 1
-        # str_stores = []
-        # for i in range(0, 5):
-        #     suggestions += Model.SES.query(Product).filter(Product.Id == suggestions[i])
-        #     id_stores = Model.SES.query(StoreProduct.id_store).filter(StoreProduct.id_product == suggestions[i])
-        #     str_stores.append(Model.format_stores(id_stores))
-        # for element in pre_suggestions[-6:]:
-        suggestions = [Product.objects.get(code=element) for element in pre_suggestions[-6:]]
-        return suggestions  # str_stores
+        if pre_suggestions != []:
+            # print(pre_suggestions)
+            suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions[:6]]
+            return suggestions
+        else:
+            return 0
 
 
 class History(models.Model):

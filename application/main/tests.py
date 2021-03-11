@@ -34,9 +34,15 @@ class ProductModelTests(TestCase):
         request_1 = 'cola zéro coca caféine'
         request_2 = 'berger baton petit nature'
         request_3 = 'lait chocolat biscuit'
-        self.assertEqual(Product.retrieve_product(self, request_1).code, target_1)
+        result_1, cat_1 = Product.retrieve_product(request_1)
+        print(result_1)
+        result_2, cat_2 = Product.retrieve_product(request_2)
+        print(result_2)
+        result_3, cat_3 = Product.retrieve_product(request_3)
+        print(result_3)
+        self.assertEqual(result_1.code, target_1)
         print('assert 1 DONE')
-        self.assertEqual(Product.retrieve_product(self, request_2).code, target_2)
+        self.assertEqual(result_2.code, target_2)
         print('assert 2 DONE')
-        self.assertEqual(Product.retrieve_product(self, request_3).code, target_3)
+        self.assertEqual(result_3.code, target_3)
         print('assert 3 DONE')

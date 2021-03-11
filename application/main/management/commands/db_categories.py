@@ -1,4 +1,5 @@
 import json
+from re import sub
 from django.core.management.base import BaseCommand, CommandError
 from main.models import Category, Store
 
@@ -9,12 +10,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         unknown = Store(name="Lieu d'achat non précisé")
         unknown.save()
-        with open('main/management/commands/settings.json', 'r') as categories:
-            data = json.load(categories)
-        for category_name in data['categories_main']:
-            self.create_category(category_name)
-        for category_name in data['categories_sub']:
-            self.create_category(category_name)
+        with open('main/management/commands/settings.json', 'r') as settings:
+            data = json.load(settings)
+        categories = data['categories']
+        for main_category in categories:
+            self.create_category(main_category)
+            for sub_category in categories[main_category]:
+                self.create_category(sub_category)
 
     def create_category(self, category_name):
         try:

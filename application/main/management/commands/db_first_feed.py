@@ -1,7 +1,9 @@
+from datetime import datetime
 from django.db.utils import DataError
 import requests
 import json
-import pprint
+import urllib.request as urlreq
+from urllib.error import HTTPError, URLError
 import re
 from django.core.management.base import BaseCommand
 from django.core.exceptions import ObjectDoesNotExist
@@ -41,25 +43,31 @@ class Command(BaseCommand):
             page = last_page.page_number + 1
         except ObjectDoesNotExist:
             page = 1
-        categories = Category.objects.all()
-        if not categories:
-            print('The main_category table is empty, please feed it first to extract the categories.')
-            return
+        # categories = Category.objects.all()
+        # if not categories:
+            # print('The main_category table is empty, please feed it first to extract the categories.')
+            # return
         with open('main/management/commands/settings.json', 'r') as settings:
             self.data = json.load(settings)
+        categories_settings = self.data['categories']
+        # cat_set_values = categories_settings.values()
+        # print(cat_set_values)
         self.url = "https://fr.openfoodfacts.org/cgi/search.pl?json=1"
-        for category in categories:
-            if category.name in self.data["categories_main"]:
-                self.parameters = {'search_terms': category.name, 'page_size': self.data['page_size_main'],
+        for main_category in categories_settings:
+            for sub_category in categories_settings[main_category]:
+                # print(sub_category)
+                self.parameters = {'search_terms': sub_category, 'page_size': self.data['page_size_sub'],
                                    'page': page, 'fields': self.data['fields']}
-            elif category.name in self.data["categories_sub"]:
-                self.parameters = {'search_terms': category.name, 'page_size': self.data['page_size_sub'], 'page': page,
-                                   'fields': self.data['fields']}
-            self.extract_data(category)
+                self.extract_data(sub_category)
+            # print(main_category)
+            self.parameters = {'search_terms': main_category, 'page_size': self.data['page_size_main'], 'page': page,
+                               'fields': self.data['fields']}
+            self.extract_data(main_category)
         history = History(page_number=page)
         history.save()
+        print('DONE! Database fed on ' + str(datetime.now()) + ' with page ' + str(page))
 
-    def extract_data(self, category):
+    def extract_data(self, category_name):
         """
         Function called by the above one to perform the extraction of data on OpenFoodFacts.
         The searched category, the url and the parameters of the request are passed in as arguments.
@@ -74,15 +82,16 @@ check the url passed in requests and its parameters.')
             raise Exception('A connection error occured')
         raw_products = result['products']
         for raw_product in raw_products:
-            self.treat_data(raw_product, category)
+            self.treat_data(raw_product, category_name)
 
-    def treat_data(self, raw_product, category):
+    def treat_data(self, raw_product, category_name):
         """
         Function that inserts a new product in the database if it's not already in.
         It also adds links between products and their categories and stores.
         """
         dict = Command.DICT_STORES
         try:
+            category = Category.objects.get(name=category_name)
             product = Product(code=raw_product['code'],
                               name=raw_product['product_name'].lower(),
                               nutriscore=raw_product['nutriscore_grade'],
@@ -90,6 +99,13 @@ check the url passed in requests and its parameters.')
                               url=raw_product['url'],
                               popularity=raw_product['unique_scans_n'])
             product.save()
+            try:
+                imgurl = raw_product['image_url']
+                urlreq.urlretrieve(imgurl, "static/img/products/" + raw_product['code'] + '.jpg')
+            except HTTPError:
+                pass
+            except URLError:
+                pass
             if "stores_tags" in raw_product:
                 for store_element in raw_product['stores_tags']:
                     store = None
@@ -105,11 +121,15 @@ check the url passed in requests and its parameters.')
                     if not store:
                         store = Store.objects.get(id=1)
                     product.store.add(store)
-            product.category.add(category)
+            prod_categories = product.category.all()
+            if len(prod_categories) < 2:
+                product.category.add(category)
         except KeyError:
             pass
         except DataError:
             pass
         except IntegrityError:
             product = Product.objects.get(code=raw_product['code'])
-            product.category.add(category)
+            prod_categories = product.category.all()
+            if len(prod_categories) < 2:
+                product.category.add(category)
