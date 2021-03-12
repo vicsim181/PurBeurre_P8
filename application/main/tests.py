@@ -32,7 +32,7 @@ class ProductModelTests(TestCase):
         target_2 = '3449860415703'  # Petits Bâtons de Berger Nature
         target_3 = '3175680011534'  # Biscuit lait chocolat
         request_1 = 'cola zéro coca caféine'
-        request_2 = 'berger baton petit nature'
+        request_2 = 'berger bâtons petits nature'
         request_3 = 'lait chocolat biscuit'
         result_1, cat_1 = Product.retrieve_product(request_1)
         print(result_1)

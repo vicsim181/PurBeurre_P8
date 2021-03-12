@@ -1,3 +1,4 @@
+from typing import Sized
 from django import forms
 
 

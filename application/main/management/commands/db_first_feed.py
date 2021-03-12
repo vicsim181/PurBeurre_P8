@@ -56,18 +56,18 @@ class Command(BaseCommand):
         for main_category in categories_settings:
             for sub_category in categories_settings[main_category]:
                 # print(sub_category)
-                self.parameters = {'search_terms': sub_category, 'page_size': self.data['page_size_sub'],
+                self.parameters = {'search_terms': sub_category, 'page_size': self.data['page_size'],
                                    'page': page, 'fields': self.data['fields']}
-                self.extract_data(sub_category)
+                self.extract_data(main_category, sub_category)
             # print(main_category)
-            self.parameters = {'search_terms': main_category, 'page_size': self.data['page_size_main'], 'page': page,
-                               'fields': self.data['fields']}
-            self.extract_data(main_category)
+            # self.parameters = {'search_terms': main_category, 'page_size': self.data['page_size_main'], 'page': page,
+            #                    'fields': self.data['fields']}
+            # self.extract_data(main_category)
         history = History(page_number=page)
         history.save()
         print('DONE! Database fed on ' + str(datetime.now()) + ' with page ' + str(page))
 
-    def extract_data(self, category_name):
+    def extract_data(self, main_category_name, sub_category_name):
         """
         Function called by the above one to perform the extraction of data on OpenFoodFacts.
         The searched category, the url and the parameters of the request are passed in as arguments.
@@ -82,16 +82,17 @@ check the url passed in requests and its parameters.')
             raise Exception('A connection error occured')
         raw_products = result['products']
         for raw_product in raw_products:
-            self.treat_data(raw_product, category_name)
+            self.treat_data(raw_product, main_category_name, sub_category_name)
 
-    def treat_data(self, raw_product, category_name):
+    def treat_data(self, raw_product, main_category_name, sub_category_name):
         """
         Function that inserts a new product in the database if it's not already in.
         It also adds links between products and their categories and stores.
         """
         dict = Command.DICT_STORES
         try:
-            category = Category.objects.get(name=category_name)
+            main_category = Category.objects.get(name=main_category_name)
+            sub_category = Category.objects.get(name=sub_category_name)
             product = Product(code=raw_product['code'],
                               name=raw_product['product_name'].lower(),
                               nutriscore=raw_product['nutriscore_grade'],
@@ -99,9 +100,13 @@ check the url passed in requests and its parameters.')
                               url=raw_product['url'],
                               popularity=raw_product['unique_scans_n'])
             product.save()
+            product.category.add(main_category)
+            product.category.add(sub_category)
             try:
                 imgurl = raw_product['image_url']
                 urlreq.urlretrieve(imgurl, "static/img/products/" + raw_product['code'] + '.jpg')
+                small_imgurl = raw_product['image_small_url']
+                urlreq.urlretrieve(small_imgurl, "static/img/products_small/" + raw_product['code'] + '.jpg')
             except HTTPError:
                 pass
             except URLError:
@@ -121,15 +126,16 @@ check the url passed in requests and its parameters.')
                     if not store:
                         store = Store.objects.get(id=1)
                     product.store.add(store)
-            prod_categories = product.category.all()
-            if len(prod_categories) < 2:
-                product.category.add(category)
+            # prod_categories = product.category.all()
+            # if len(prod_categories) < 2:
+                # product.category.add(category)
         except KeyError:
             pass
         except DataError:
             pass
         except IntegrityError:
-            product = Product.objects.get(code=raw_product['code'])
-            prod_categories = product.category.all()
-            if len(prod_categories) < 2:
-                product.category.add(category)
+            pass
+            # product = Product.objects.get(code=raw_product['code'])
+            # prod_categories = product.category.all()
+            # if len(prod_categories) < 2:
+            #     product.category.add(category)

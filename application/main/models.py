@@ -41,6 +41,7 @@ class Product(models.Model):
         #     return winner, category
         scores = {}
         nb_words_request = len(request.split(' '))
+        # products = Product.objects.filter(name__unaccent__icontains=request)
         products = Product.objects.annotate(search=SearchVector('name')).filter(search=request)
         print(products)
         if products:
@@ -99,16 +100,12 @@ class Product(models.Model):
         while len(pre_suggestions) < 6:
             print('WINNER NUTRI: ' + winner.nutriscore + '    NUTRI TARGET: ' + nutri[0+i])
             if winner.nutriscore == nutri[0 + i]:
-                if len_cat == 1:
-                    # print(pre_suggestions)
-                    if pre_suggestions != []:
-                        if len(pre_suggestions) < 6:
-                            suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions[:len(pre_suggestions)]]
-                        else:
-                            suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions[:6]]
-                        return suggestions
+                if pre_suggestions != []:
+                    if len(pre_suggestions) < 6:
+                        suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions[:len(pre_suggestions)]]
                     else:
-                        return None
+                        suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions[:6]]
+                        return suggestions
                 else:
                     j, i = 0, 0
             print('I J: ' + str(i) + ' ' + str(j))
