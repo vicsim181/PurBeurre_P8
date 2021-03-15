@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-section">
+    <h1>BONJOUR</h1>
+    <h2>{{ current_date }}</h2>
+</div>
+{% if product %}
+<div class="page-section">
+    <h2>{{product.name}}</h2>
+</div>
+{% endif %}
+{% endblock %}

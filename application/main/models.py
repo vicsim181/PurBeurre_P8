@@ -59,6 +59,11 @@ class Product(models.Model):
                     score_final = (100 + score_final_2) / 2
                 print('product: ' + str(string_product) + '   request: ' + request + ' nb_words_request ' + str(nb_words_request))
                 print(score_final)
+                if score_final == 100:
+                    scores[score_final] = product.code
+                    winner = Product.objects.get(code=product.code)
+                    category = Category.objects.filter(product__id=winner.id)
+                    return winner, category
                 scores[score_final] = product.code
             print(scores)
             if scores:
@@ -106,6 +111,8 @@ class Product(models.Model):
                     else:
                         suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions[:6]]
                         return suggestions
+                if j == 0 and j == 0:
+                    return 0
                 else:
                     j, i = 0, 0
             print('I J: ' + str(i) + ' ' + str(j))

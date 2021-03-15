@@ -1,35 +1,5 @@
-#results {
-    display: flex;
-    flex-direction: row-reverse;
-    /* flex-basis: auto; */
-    /* color: black; */
+.suggestion {
+    flex-basis: 23%;
+    background-color: rgb(140, 153, 153);
+    text-align: center;
 }
-
-.one {
-    flex: 1;
-    font-style: italic;
-}
-
-.two {
-    flex: 1;
-}
-
-.three {
-    flex: 1;
-}
-
-/* .suggest_img {
-    size: 1;
-} */
-/* .product {
-    display: flex;
-    flex-direction: row;
-}
-
-.product_img {
-    flex: initial;
-}
-
-.product_infos {
-    flex: initial;
-} */
