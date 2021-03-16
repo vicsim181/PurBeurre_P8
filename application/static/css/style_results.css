@@ -1,5 +1,5 @@
 .suggestion {
-    flex-basis: 23%;
-    background-color: rgb(140, 153, 153);
     text-align: center;
+    flex-basis: 20%;
+    background-color: rgb(140, 153, 153);
 }

@@ -17,34 +17,25 @@
     </div>
     <!-- </section> -->
 </div>
-<div class="d-flex flex-column bd-highlight">
+<div class="page-section d-flex flex-column bd-highlight">
     <!-- <section class="two"> -->
         {% if product %}
             <div class="d-flex bd-highlight justify-content-center">
                 <img src="static/img/products/{{ product.code }}.jpg" />
             </div>
             <div class="d-flex bd-highlight justify-content-center">
-                <p>Nom du produit: {{ product.name.title }}</p>
+                <p>{{ product.name.title }}</p>
             </div>
             <div class="d-flex bd-highlight justify-content-center">
-                 <p>Nutriscore: {{ product.nutriscore }}</p>
+                 <img src="static/img/nutri_{{ product.nutriscore }}.png">
             </div>
-            <div class="d-flex bd-highlight justify-content-center">
-                <p>Code barre: {{ product.code }}</p>
-            </div>
-            <div class="d-flex bd-highlight justify-content-center">
-                <p>Ingrédients: {{ product.description }}</p>
-            </div>
-            <div class="d-flex bd-highlight justify-content-center flex-wrap">
-                <p>url: {{ product.url }}</p>
-            </div>
-            <div class="d-flex bd-highlight justify-content-center flex-wrap">
+            <!-- <div class="d-flex bd-highlight justify-content-center flex-wrap">
                 <p>Catégorie:
                     {% for category in product.category.all %}
                         {{ category.name }},
                     {% endfor %}
                 </p>
-            </div>
+            </div> -->
         {% else %}
             <p>Pas de produit à afficher</p>
         {% endif %}
@@ -52,15 +43,12 @@
 </div>
 {% if suggestions and suggestions != 0 %}
 <div class="d-flex flex-wrap justify-content-between p-5">
-    <!-- <section class="three"> -->
             {% for suggestion in suggestions %}
-                <div class="mb-5 p-3 mx-5 suggestion">
-                    <a href="product/2">
-                        <form type="submit" method="POST">
-                            <img src="static/img/products_small/{{ suggestion.code }}.jpg"/>
-                            <p class="p-2">{{ suggestion.name.title }}</p>
-                            <p>Nutriscore: {{ suggestion.nutriscore.upper }}</p>
-                        </form>
+                <div class="mx-5 mb-5 p-3 suggestion">
+                    <a href="{{suggestion.id}}">
+                        <img src="static/img/products_small/{{ suggestion.code }}.jpg"/>
+                        <p class="p-2">{{ suggestion.name.title }}</p>
+                        <img src="static/img/nutri_{{suggestion.nutriscore}}.png">
                     </a>
                 </div>
             {% endfor %}

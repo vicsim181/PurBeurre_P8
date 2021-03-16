@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/detail.css' %}">
+<div class="page-section body">
+    <div class="header">
+        <img src="static/img/products/{{ product.code }}.jpg">
+    </div>
+    <br>
+    <div class="title">
+        <h1>{{ product.name.title }}</h1>
+    </div>
+    <br>
+    <div class="infos">
+        <img src="static/img/nutri_{{product.nutriscore}}.png">
+        <p>{{ product.description }}</p>
+    </div>
+    <div class="link">
+        <a href="{{ product.url }}"><p>Voir la fiche d'OpenFoodFacts</p></a>
+    </div>
+</div>
+
+{% endblock %}

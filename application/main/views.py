@@ -1,8 +1,6 @@
 # from application.main.models import Category
-from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponse
-from django.views.decorators.http import require_http_methods
-from django.views.generic import TemplateView, DetailView
+from django.shortcuts import render
+from django.views.generic import TemplateView
 from main.forms import HomeForm
 from main.models import Product
 from datetime import datetime
@@ -30,18 +28,10 @@ class HomeView(TemplateView):
                           'suggestions': suggestions})
 
 
-class ResultsView(TemplateView):
-    template_name = 'main/results.html'
-
-    # def post(self, request):
-    #     product = Product.objects.get(pk=request)
-    #     print('PRODUCT: ' + product.name)
-    #     return render(request, 'main/product.html', {'product': product})
-
-
 class ProductView(TemplateView):
-    template_name = 'main/product.html'
+    template_name = 'main/product_detail.html'
 
-    def get(self, request):
-        # product = Product.objects.get(pk=request)
-        return render(request, self.template_name, {'current_date': datetime.now()})
+    def get(self, request, product_id):
+        product = Product.objects.get(pk=product_id)
+        context = {'product': product}
+        return render(request, 'main/product_detail.html', context)

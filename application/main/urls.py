@@ -1,8 +1,10 @@
-from django.urls import path
-from .views import HomeView, ResultsView, ProductView
+from django.conf.urls import url
+# from django.urls import path
+from django.conf.urls import url
+from django.urls.conf import path, re_path
+from .views import HomeView, ProductView
 
 urlpatterns = [
-    path('', HomeView.as_view()),
-    path('results/<str:input>', ResultsView.as_view(), name='request-results'),
-    path('product/', ProductView.as_view(), name='product-details'),
+    path('', HomeView.as_view(), name='home'),
+    path('<product_id>', ProductView.as_view(), name='product_detail'),
 ]

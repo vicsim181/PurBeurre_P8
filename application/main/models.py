@@ -127,6 +127,10 @@ class Product(models.Model):
         else:
             return 0
 
+    def retrieve_from_code(self, code):
+        product = Product.objects.get(code=code)
+        return product
+
 
 class History(models.Model):
     page_number = models.IntegerField(primary_key=True)

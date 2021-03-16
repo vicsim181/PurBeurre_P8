@@ -18,7 +18,8 @@
                 <div class="col-md-6 offset-md-3">
                     <form method="post">
                             {% csrf_token %}
-                            {{ form.as_p }}
+                            {{ form.post }}
+                            <br>
                         <button type="submit" class="btn btn-info">Rechercher</button>
                     </form>
                 </div>
@@ -59,10 +60,10 @@
                     les aliments vendus. Lorsque Colette m'a demandé si elle pouvait remplacer son Nutella matinal par
                     un aliment plus sain,
                     je savais tout de suite où le trouver. L'idée de Pur Beurre était née !"</p>
-                <div class="row">
-                    <div class="col-md-6"><img src="static/img/colette-tatou-full.png"
+                <div class="d-flex">
+                    <div class="flex-wrap-auto"><img src="static/img/colette-tatou-full.png"
                             alt="Portrait Colette"></div>
-                    <div class="col-md-6"><img src="static/img/ratatouille.png"
+                    <div class="flex-wrap-auto"><img src="static/img/ratatouille.png"
                             alt="Portrait Remy"></div>
                 </div>
             </div>
