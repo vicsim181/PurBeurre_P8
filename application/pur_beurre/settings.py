@@ -34,7 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'main.apps.MainConfig',
     'bookmark.apps.BookmarkConfig',
-    'usermanagement.apps.UsermanagementConfig',
+    'authentication.apps.AuthenticationConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +76,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'pur_beurre.wsgi.application'
+
+AUTH_USER_MODEL = "authentication.User"
+LOGIN_REDIRECT_URL = "home"
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

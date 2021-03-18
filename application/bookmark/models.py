@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from main.models import Product
-from usermanagement.models import User
+from authentication.models import User
 
 
 # Create your models here.

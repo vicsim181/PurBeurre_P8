@@ -168,7 +168,7 @@ a {
   background-color: transparent;
 }
 a:hover {
-  color: #ffffff;
+  color: #130101;
   text-decoration: underline;
 }
 
@@ -3885,6 +3885,14 @@ input[type=button].btn-block {
   list-style: none;
 }
 
+.username {
+  font-size: large;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0.5rem 1rem;
+  color: #b8babb;
+  border-color: #dee2e6 #dee2e6 #fff;
+}
+
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
@@ -3914,7 +3922,6 @@ input[type=button].btn-block {
 }
 .nav-tabs .nav-link.disabled {
   color: #6c757d;
-  /* background-color: transparent; */
   border-color: transparent;
 }
 .nav-tabs .nav-link.active,

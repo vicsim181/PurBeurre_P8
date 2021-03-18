@@ -29,13 +29,6 @@
             <div class="d-flex bd-highlight justify-content-center">
                  <img src="static/img/nutri_{{ product.nutriscore }}.png">
             </div>
-            <!-- <div class="d-flex bd-highlight justify-content-center flex-wrap">
-                <p>Catégorie:
-                    {% for category in product.category.all %}
-                        {{ category.name }},
-                    {% endfor %}
-                </p>
-            </div> -->
         {% else %}
             <p>Pas de produit à afficher</p>
         {% endif %}
@@ -46,9 +39,9 @@
             {% for suggestion in suggestions %}
                 <div class="mx-5 mb-5 p-3 suggestion">
                     <a href="{{suggestion.id}}">
-                        <img src="static/img/products_small/{{ suggestion.code }}.jpg"/>
+                        <img src="static/img/products_small/{{suggestion.code}}.jpg"/>
                         <p class="p-2">{{ suggestion.name.title }}</p>
-                        <img src="static/img/nutri_{{suggestion.nutriscore}}.png">
+                        <img src="static/img/nutri_{{ product.nutriscore }}.png">
                     </a>
                 </div>
             {% endfor %}

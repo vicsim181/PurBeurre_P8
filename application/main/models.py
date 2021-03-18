@@ -1,7 +1,7 @@
-from pprint import pprint
+from django.db.models.deletion import CASCADE
 from django.db import models
 from django.utils import timezone
-from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
+from django.contrib.postgres.search import SearchVector
 
 # Create your models here.
 
@@ -34,14 +34,11 @@ class Product(models.Model):
         return 'product: ' + self.name
 
     def retrieve_product(request):
-        # vector = SearchVector('name')
-        # query = SearchQuery(request)
-        # winner = Product.objects.annotate(rank=SearchRank(vector, query)).order_by('-rank')[0]
-        # if winner:
-        #     return winner, category
+        """
+        Function used to retrieve the product matching the best with the user request.
+        """
         scores = {}
         nb_words_request = len(request.split(' '))
-        # products = Product.objects.filter(name__unaccent__icontains=request)
         products = Product.objects.annotate(search=SearchVector('name')).filter(search=request)
         print(products)
         if products:
@@ -57,7 +54,8 @@ class Product(models.Model):
                     score_final_2 = round((score/len(string_product)) * 100)
                     print('SCORE 2: ' + str(score_final_2))
                     score_final = (100 + score_final_2) / 2
-                print('product: ' + str(string_product) + '   request: ' + request + ' nb_words_request ' + str(nb_words_request))
+                print('product: ' + str(string_product) + '   request: ' + request +
+                      ' nb_words_request ' + str(nb_words_request))
                 print(score_final)
                 if score_final == 100:
                     scores[score_final] = product.code
@@ -82,8 +80,6 @@ class Product(models.Model):
         Function looking for the suggestions in the chosen category.
         """
         print('BEGIN LOOKING FOR SUGGESTION')
-        # print('CATEGORIES: ' + str(categories))
-        # print('NUTRI: ' + target_nutriscore)
         results = Product.objects.filter(category=categories[j].id, nutriscore=target_nutriscore)
         nb = [element for element in results]
         nb.remove(winner_code) if winner_code in nb else None
@@ -126,10 +122,6 @@ class Product(models.Model):
             return suggestions
         else:
             return 0
-
-    def retrieve_from_code(self, code):
-        product = Product.objects.get(code=code)
-        return product
 
 
 class History(models.Model):
