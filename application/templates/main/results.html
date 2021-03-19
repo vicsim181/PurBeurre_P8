@@ -21,16 +21,18 @@
     <!-- <section class="two"> -->
         {% if product %}
             <div class="d-flex bd-highlight justify-content-center">
-                <img src="static/img/products/{{ product.code }}.jpg" />
+                <img src="{{url}}products/{{ product.code }}.jpg" />
             </div>
             <div class="d-flex bd-highlight justify-content-center">
                 <p>{{ product.name.title }}</p>
             </div>
             <div class="d-flex bd-highlight justify-content-center">
-                 <img src="static/img/nutri_{{ product.nutriscore }}.png">
+                 <img src="{{url}}nutri_{{ product.nutriscore }}.png">
             </div>
         {% else %}
-            <p>Pas de produit à afficher</p>
+            <div class="d-flex bd-highlight justify-content-center">
+                <p>Pas de produit à afficher</p>
+            </div>
         {% endif %}
     <!-- </section> -->
 </div>
@@ -38,10 +40,11 @@
 <div class="d-flex flex-wrap justify-content-between p-5">
             {% for suggestion in suggestions %}
                 <div class="mx-5 mb-5 p-3 suggestion">
-                    <a href="{{suggestion.id}}">
-                        <img src="static/img/products_small/{{suggestion.code}}.jpg"/>
+                    <a href="{% url 'product_detail' product_id=suggestion.id %}">
+                        <img src="{{url}}products_small/{{suggestion.code}}.jpg"/>
                         <p class="p-2">{{ suggestion.name.title }}</p>
-                        <img src="static/img/nutri_{{ product.nutriscore }}.png">
+                        <img src="{{url}}nutri_{{ suggestion.nutriscore }}.png">
+                        <a href="">Sauvegarder</a>
                     </a>
                 </div>
             {% endfor %}

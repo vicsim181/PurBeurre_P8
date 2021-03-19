@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'crispy_forms',
 ]
 
+AUTH_USER_MODEL = "authentication.User"  # changes the built-in user model to ours
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -77,7 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pur_beurre.wsgi.application'
 
-AUTH_USER_MODEL = "authentication.User"
 LOGIN_REDIRECT_URL = "home"
 
 # Database

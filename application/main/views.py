@@ -1,11 +1,7 @@
-# from application.main.models import Category
-from django.contrib.auth.decorators import login_required, permission_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from main.forms import HomeForm
 from main.models import Product
-from authentication.models import User
-from datetime import datetime
 
 
 # Create your views here.
@@ -22,12 +18,20 @@ class HomeView(TemplateView):
         if form.is_valid():
             text = form.cleaned_data['post']
             form = HomeForm()
-            product, category = Product.retrieve_product(text)
-            if product:
-                suggestions = Product.generate_suggestions(category, product)
-            else:
-                suggestions = None
-        return render(request, 'main/results.html', locals())
+        return redirect('results', text)
+
+
+class ResultsView(TemplateView):
+    template_name = 'main/results.html'
+
+    def get(self, request, user_input):
+        product, category = Product.retrieve_product(user_input)
+        if product:
+            suggestions = Product.generate_suggestions(category, product)
+        else:
+            suggestions = None
+        url = '../static/img/'
+        return render(request, self.template_name, locals())
 
 
 class ProductView(TemplateView):
@@ -35,5 +39,5 @@ class ProductView(TemplateView):
 
     def get(self, request, product_id):
         product = Product.objects.get(pk=product_id)
-        context = {'product': product}
-        return render(request, 'main/product_detail.html', context)
+        url = '../static/img/'
+        return render(request, 'main/product_detail.html', locals())
