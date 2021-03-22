@@ -34,17 +34,30 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+from django.views.generic.base import TemplateView
 # from accounts.forms import UserAdminCreationForm
 from .forms import RegisterForm
 
 
 # @login_required()
-def register(request):
-    form = RegisterForm()
-    if request.method == 'POST':
+class RegisterView(TemplateView):
+    template_name = 'authentication/register.html'
+
+    def get(self, request):
+        form = RegisterForm()
+        return render(request, self.template_name, locals())
+
+    def post(self, request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
             print('DONE')
             return render(request, 'authentication/registered.html')
-    return render(request, 'authentication/register.html', {'form': form})
+        return render(request, self.template_name, locals())
+
+
+class ConsultAccountView(TemplateView):
+    template_name = 'authentication/account.html'
+
+    def get(self, request):
+        return render(request, self.template_name)

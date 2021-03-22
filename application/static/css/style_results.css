@@ -8,3 +8,15 @@
     border-radius: 25% 10%;
     border: solid black;
 }
+
+.head {
+    flex-grow: 1;
+    margin-top: 4.5em;
+    margin-bottom: 2em;
+}
+
+.section {
+    flex-grow: 2;
+    margin-top: 3em;
+    margin-bottom: 3em;
+}

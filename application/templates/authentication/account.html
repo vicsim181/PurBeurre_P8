@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/account.css' %}">
+<div class="head">
+    <div class="d-flex justify-content-center">
+        <h2>{{ user.first_name }} {{ user.last_name }}, voici votre espace personnel !</h2>
+    </div>
+</div>
+<div class="section">
+    <p>Nom: {{user.last_name}}</p>
+    <p>Prénom: {{user.first_name}}</p>
+    <p>Email: {{user.email}}</p>
+</div>
+{% endblock %}

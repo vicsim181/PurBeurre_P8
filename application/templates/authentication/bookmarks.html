@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="section">
+    {% for bookmark in user.bookmark %}
+    <ul>
+        <li>{{bookmark}}</li>
+    </ul>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -4,8 +4,7 @@
 
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/style_results.css' %}">
-<div class="page-section">
-    <!-- <section class="one"> -->
+<div class="head">
     <div class="d-flex justify-content-center">
         <h1>Résultats</h1>
     </div>
@@ -15,16 +14,14 @@
     <div class="d-flex justify-content-center">
         <h3>Consultez les alternatives ci-dessous</h3>
     </div>
-    <!-- </section> -->
 </div>
-<div class="page-section d-flex flex-column bd-highlight">
-    <!-- <section class="two"> -->
+<div class="section d-flex flex-column bd-highlight">
         {% if product %}
             <div class="d-flex bd-highlight justify-content-center">
-                <img src="{{url}}products/{{ product.code }}.jpg" />
+                <h2>{{ product.name.title }}</h2>
             </div>
             <div class="d-flex bd-highlight justify-content-center">
-                <p>{{ product.name.title }}</p>
+                <img src="{{url}}products/{{ product.code }}.jpg" />
             </div>
             <div class="d-flex bd-highlight justify-content-center">
                  <img src="{{url}}nutri_{{ product.nutriscore }}.png">
@@ -34,7 +31,6 @@
                 <p>Pas de produit à afficher</p>
             </div>
         {% endif %}
-    <!-- </section> -->
 </div>
 {% if suggestions and suggestions != 0 %}
 <div class="d-flex flex-wrap justify-content-between p-5">
@@ -50,12 +46,11 @@
             {% endfor %}
 </div>            
 {% elif suggestions == 0 %}
-<div class="page-section">
+<div class="section">
             <div class="d-flex justify-content-center">
                 <p>Je ne trouve pas d'aliment plus sain dans la même catégorie...</p>
             </div>
 {% endif %}
-    <!-- </section> -->
 </div>
 
 {% endblock %}
