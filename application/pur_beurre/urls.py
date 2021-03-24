@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('main.urls'), name="home"),
     url('admin/', admin.site.urls),
     url('user/', include('authentication.urls'), name="user"),
+    url('bookmark/', include('bookmark.urls'), name='bookmarks'),
 ]

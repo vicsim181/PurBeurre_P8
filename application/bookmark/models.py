@@ -13,3 +13,11 @@ class Substitution(models.Model):
     source_product = models.ForeignKey(Product, related_name="source_product", on_delete=CASCADE)
     date_creation = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(get_user_model(), on_delete=CASCADE)
+
+    def get_bookmarks(user_id):
+        bookmarks = Substitution.objects.filter(user_id=user_id)
+        return bookmarks
+
+    def save_bookmark(source_id, target_id, user):
+        bookmark = Substitution(source_product_id=source_id, target_product_id=target_id, user_id=user)
+        bookmark.save()

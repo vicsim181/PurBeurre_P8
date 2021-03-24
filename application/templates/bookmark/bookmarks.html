@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-section"></div>
+{% if bookmarks_list %}
+    <ul>
+        {% for bookmark in bookmarks_list %}
+            <li>
+                Produit: <a href="{% url 'product_detail' pk=source_product_id %}">{{ bookmark.source_product_id }}</a> remplacé par: <a href="{% url 'product_detail' pk=target_product_id %}">{{bookmark.target_product_id}}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>There are no products.</p>
+{% endif %}
+</div>
+{% endblock %}

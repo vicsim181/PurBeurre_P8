@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 from main.forms import HomeForm
 from main.models import Product
 
@@ -34,10 +34,12 @@ class ResultsView(TemplateView):
         return render(request, self.template_name, locals())
 
 
-class ProductView(TemplateView):
+class ProductView(DetailView):
     template_name = 'main/product_detail.html'
+    model = Product
+    # template_name = 'main/product_detail.html'
 
-    def get(self, request, product_id):
-        product = Product.objects.get(pk=product_id)
-        url = '../static/img/'
-        return render(request, 'main/product_detail.html', locals())
+    # def get(self, request, product_id):
+    #     product = Product.objects.get(pk=product_id)
+    #     url = '../static/img/'
+    #     return render(request, 'main/product_detail.html', locals())

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{% static 'css/detail.css' %}">
 <div class="page-section body">
     <div class="header">
-        <img src="{{url}}products/{{ product.code }}.jpg">
+        <img src="{% static img %}img/products/{{ product.code }}.jpg">
     </div>
     <br>
     <div class="title">
@@ -13,7 +13,7 @@
     </div>
     <br>
     <div class="infos">
-        <img src="{{url}}nutri_{{product.nutriscore}}.png">
+        <img src="{% static img %}img/nutri_{{product.nutriscore}}.png">
         <p>{{ product.description }}</p>
     </div>
     <div class="link">

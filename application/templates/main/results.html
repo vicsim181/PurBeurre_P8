@@ -36,7 +36,7 @@
 <div class="d-flex flex-wrap justify-content-between p-5">
             {% for suggestion in suggestions %}
                 <div class="mx-5 mb-5 p-3 suggestion">
-                    <a href="{% url 'product_detail' product_id=suggestion.id %}">
+                    <a href="{% url 'product_detail' pk=suggestion.id %}">
                         <img src="{{url}}products_small/{{suggestion.code}}.jpg"/>
                         <p class="p-2">{{ suggestion.name.title }}</p>
                         <img src="{{url}}nutri_{{ suggestion.nutriscore }}.png">

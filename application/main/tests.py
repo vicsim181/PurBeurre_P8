@@ -183,6 +183,7 @@ class DatabaseCommandsTests(TestCase):
         print("\nTEST - Database Commands --> def db_delete_category()\n")
         delete_1 = 'fromage bleu'
         delete_2 = 'yaourt'
+        product_target = 'soja greek style'
         out = StringIO()
         call_command('db_delete_category', delete_1, stdout=out)
         categories = Category.objects.all()
@@ -207,3 +208,7 @@ class DatabaseCommandsTests(TestCase):
         print("self.assert(categories.name remaining, all but 'fromage bleu', 'yaourt' and its subs)")
         self.assertEqual(remaining, assert_2)
         print('Assert 2 Done')
+        result_product, not_used = Product.retrieve_product(product_target)
+        print("self.assertEqual(result from retrieve_product('soja greek style'), None)")
+        self.assertEqual(result_product, None)
+        print('Assert 3 Done')
