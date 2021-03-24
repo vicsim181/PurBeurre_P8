@@ -1,3 +1,4 @@
+import pprint
 from django.db.models.deletion import CASCADE
 from django.db import models
 from django.utils import timezone
@@ -38,32 +39,34 @@ class Product(models.Model):
         Function used to retrieve the product matching the best with the user request.
         """
         scores = {}
-        nb_words_request = len(request.split(' '))
-        products = Product.objects.annotate(search=SearchVector('name')).filter(search=request)
-        print(products)
+        user_request = request.replace('-', ' ')
+        nb_words_request = len(user_request.split(' '))
+        # print('NB WORD REQUEST: ' + str(nb_words_request))
+        products = Product.objects.annotate(search=SearchVector('name')).filter(search=user_request)
+        # print(products)
         if products:
             for product in products:
                 score = 0
                 string_product = product.name.replace('-', ' ').split(' ')
                 for word in string_product:
-                    if word.lower() in request.lower():
+                    if word.lower() in user_request.lower():
                         score += 1
                 score_final = round((score/nb_words_request) * 100)
-                print('SCORE 1: ' + str(score_final))
+                # print('SCORE 1: ' + str(score_final))
                 if score_final >= 100:
                     score_final_2 = round((score/len(string_product)) * 100)
-                    print('SCORE 2: ' + str(score_final_2))
+                    # print('SCORE 2: ' + str(score_final_2))
                     score_final = (100 + score_final_2) / 2
-                print('product: ' + str(string_product) + '   request: ' + request +
-                      ' nb_words_request ' + str(nb_words_request))
-                print(score_final)
+                # print('product: ' + str(string_product) + '   request: ' + request +
+                    #   ' nb_words_request ' + str(nb_words_request))
+                # print(score_final)
                 if score_final == 100:
                     scores[score_final] = product.code
                     winner = Product.objects.get(code=product.code)
                     category = Category.objects.filter(product__id=winner.id)
                     return winner, category
                 scores[score_final] = product.code
-            print(scores)
+            # print(scores)
             if scores:
                 max = 0
                 for key in scores:
@@ -79,7 +82,7 @@ class Product(models.Model):
         """
         Function looking for the suggestions in the chosen category.
         """
-        print('BEGIN LOOKING FOR SUGGESTION')
+        # print('BEGIN LOOKING FOR SUGGESTION')
         results = Product.objects.filter(category=categories[j].id, nutriscore=target_nutriscore)
         nb = [element for element in results]
         nb.remove(winner_code) if winner_code in nb else None
@@ -89,7 +92,7 @@ class Product(models.Model):
         """
         Function formating and generating the chosen suggestions.
         """
-        print("BEGIN GENERATE_SUGGESTION")
+        # print("BEGIN GENERATE_SUGGESTION")
         nutri = ['a', 'b', 'c', 'd', 'e']
         pre_suggestions = []
         i = 0
@@ -99,7 +102,7 @@ class Product(models.Model):
         elif len_cat == 2:
             j = 1
         while len(pre_suggestions) < 6:
-            print('WINNER NUTRI: ' + winner.nutriscore + '    NUTRI TARGET: ' + nutri[0+i])
+            # print('WINNER NUTRI: ' + winner.nutriscore + '    NUTRI TARGET: ' + nutri[0+i])
             if winner.nutriscore == nutri[0 + i]:
                 if pre_suggestions != []:
                     if len(pre_suggestions) < 6:
@@ -111,7 +114,7 @@ class Product(models.Model):
                     return 0
                 else:
                     j, i = 0, 0
-            print('I J: ' + str(i) + ' ' + str(j))
+            # print('I J: ' + str(i) + ' ' + str(j))
             results = Product.looking_for_suggestion(winner.code, nutri[0 + i], categories, j)
             for element in results:
                 pre_suggestions.append(element)
