@@ -31,10 +31,26 @@ class BookmarkTests(TestCase):
         Substitution.save_bookmark(self.product_source.id, self.product_target.id, self.target_user.id)
         print("TEST_BOOKMARK SAVED")
         print("\nTEST - Bookmark --> def get_bookmarks()\n")
-        test_get_bookmarks = Substitution.get_bookmarks(self.target_user.id)
+        test_get_bookmarks = Substitution.get_bookmarks_by_user(self.target_user.id)
         print("self.assertTrue(test_get_bookmarks[0].target_product_id, self.product_target.id)")
         self.assertTrue(test_get_bookmarks[0].target_product_id, self.product_target.id)
         print('Assert 1 Done')
         print("self.assertTrue(test_get_bookmarks[0].source_product_id, self.product_source.id)")
         self.assertTrue(test_get_bookmarks[0].source_product_id, self.product_source.id)
         print('Assert 2 Done')
+
+    def test_get_and_delete_bookmark(self):
+        print("\nTEST - Bookmark --> def delete_bookmark()\n")
+        Substitution.save_bookmark(self.product_source.id, self.product_target.id, self.target_user.id)
+        print("TEST_BOOKMARK SAVED")
+        test_delete_bookmark = Substitution.objects.get(
+                               source_product_id=self.product_source.id,
+                               target_product_id=self.product_target.id,
+                               user_id=self.target_user.id)
+        print("test_delete_bookmark.delete()")
+        test_delete_bookmark.delete()
+        print("\ndef get_bookmarks_by_user()\n")
+        test_get_bookmarks = Substitution.get_bookmarks_by_user(self.target_user.id)
+        print("self.assertQuerysetEqual(test_get_bookmarks, [])")
+        self.assertQuerysetEqual(test_get_bookmarks, [])
+        print('Assert 1 Done')

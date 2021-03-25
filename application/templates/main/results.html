@@ -40,8 +40,18 @@
                         <img src="{{url}}products_small/{{suggestion.code}}.jpg"/>
                         <p class="p-2">{{ suggestion.name.title }}</p>
                         <img src="{{url}}nutri_{{ suggestion.nutriscore }}.png">
-                        <a href="">Sauvegarder</a>
                     </a>
+                    {% if suggestion.id not in user_favs %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="aim" value="add">
+                        <input type="hidden" name="product_id" value="{{product.id}}">
+                        <input type="hidden" name="suggestion_id" value="{{suggestion.id}}">
+                        <button type='submit' id="button">Sauvegarder</button>
+                    </form>
+                    {% else %}
+                        <p>Produit déjà dans vos favoris</p>
+                    {% endif %}
                 </div>
             {% endfor %}
 </div>            

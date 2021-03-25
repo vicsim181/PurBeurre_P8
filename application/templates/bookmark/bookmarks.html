@@ -1,15 +1,45 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="page-section"></div>
-{% if bookmarks_list %}
-    <ul>
-        {% for bookmark in bookmarks_list %}
-            <li>
-                Produit: <a href="{% url 'product_detail' pk=source_product_id %}">{{ bookmark.source_product_id }}</a> remplacé par: <a href="{% url 'product_detail' pk=target_product_id %}">{{bookmark.target_product_id}}</a>
-            </li>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bookmarks.css' %}">
+
+<div class="page-section" id="section">
+    {% if data %}
+    <div class="d-flex flex-wrap justify-content-between p-5">
+        {% for key, value in data.items %}
+            <div class="mx-5 mb-5 p-3 suggestion">
+                <a href="{% url 'product_detail' key.id %}">
+                    <img src="{{url}}products_small/{{key.code}}.jpg" />
+                    <p class="p-2">{{ key.name.title }}</p>
+                    <img src="{{url}}nutri_{{ key.nutriscore }}.png">
+                </a>
+            </div>
+            <div class="text">
+                <p> remplacé par </p>
+            </div>
+            <div class="mx-5 mb-5 p-3 suggestion">
+                <a href="{% url 'product_detail' value.0.id %}">
+                    <img src="{{url}}products_small/{{value.0.code}}.jpg" />
+                    <p class="p-2">{{ value.0.name.title }}</p>
+                    <img src="{{url}}nutri_{{ value.0.nutriscore }}.png">
+                </a>
+            </div>
+            <div class="text">
+                <p> date: </p>
+            </div>
+            <div class="mx-5 mb-5 p-3 suggestion justify-content-flexstart">
+                <p>{{value.1}}</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="aim" value="delete">
+                    <input type="hidden" name="product_id" value="{{key.id}}">
+                    <input type="hidden" name="suggestion_id" value="{{value.0.id}}">
+                    <button type='submit' id="button">Supprimer</button>
+                </form>
+            </div>
         {% endfor %}
-    </ul>
+    </div>   
 {% else %}
     <p>There are no products.</p>
 {% endif %}
