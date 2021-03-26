@@ -42,3 +42,9 @@ class Substitution(models.Model):
                 return True
         except ObjectDoesNotExist:
             return False
+
+    def check_favs(product, current_user):
+        user_favs = [Product.objects.get(pk=subst.target_product_id).id
+                     for subst in
+                     Substitution.objects.filter(source_product_id=product.id, user_id=current_user.id).all()]
+        return user_favs

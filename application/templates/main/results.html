@@ -33,7 +33,7 @@
         {% endif %}
 </div>
 {% if suggestions and suggestions != 0 %}
-<div class="d-flex flex-wrap justify-content-between p-5">
+<div class="suggestions">
             {% for suggestion in suggestions %}
                 <div class="mx-5 mb-5 p-3 suggestion">
                     <a href="{% url 'product_detail' pk=suggestion.id %}">

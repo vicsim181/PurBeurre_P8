@@ -32,11 +32,11 @@ class ResultsView(TemplateView):
         product, category = Product.retrieve_product(user_input)
         if product:
             suggestions = Product.generate_suggestions(category, product)
-            user_favs = [Product.objects.get(pk=subst.target_product_id).id for subst in Substitution.objects.filter(source_product_id=product.id, user_id=current_user.id).all()]
+            user_favs = Substitution.check_favs(product, current_user)
         else:
             suggestions = None
+            user_favs = []
         url = '../static/img/'
-        print(user_favs)
         context = {'user_favs': user_favs, 'product': product, 'suggestions': suggestions, 'category': category, 'url': url}
         return render(request, self.template_name, context=context)
 
