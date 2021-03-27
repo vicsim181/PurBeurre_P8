@@ -9,7 +9,7 @@ User = get_user_model()
 # Create your views here.
 class BookmarksView(TemplateView):
     """
-    f
+    ...
     """
     template_name = 'bookmark/bookmarks.html'
     model = Substitution
@@ -19,8 +19,8 @@ class BookmarksView(TemplateView):
         bookmarks = Substitution.get_bookmarks_by_user(current_user.id)
         data = {}
         for bookmark in bookmarks:
-            data[Product.objects.get(pk=bookmark.source_product_id)] = [
-                 Product.objects.get(pk=bookmark.target_product_id),
+            data[Product.retrieve_prod_with_pk(bookmark.target_product_id)] = [
+                 Product.retrieve_prod_with_pk(bookmark.source_product_id),
                  bookmark.date_creation]
         url = '../../static/img/'
         context = {'data': data, 'url': url}
@@ -35,6 +35,6 @@ class BookmarksView(TemplateView):
             Substitution.save_bookmark(source_id, target_id, current_user.id)
         elif aim == 'delete':
             Substitution.delete_bookmark(source_id=source_id, target_id=target_id, user_id=current_user.id)
-            return self.get(request)
+            return redirect('bookmark:consult')
         else:
             return

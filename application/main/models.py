@@ -34,6 +34,12 @@ class Product(models.Model):
     def __str__(self) -> str:
         return 'product: ' + self.name
 
+    def retrieve_prod_with_pk(pk):
+        """
+        """
+        product = Product.objects.get(pk=pk)
+        return product
+
     def retrieve_product(request):
         """
         Function used to retrieve the product matching the best with the user request.
@@ -41,38 +47,37 @@ class Product(models.Model):
         scores = {}
         user_request = request.replace('-', ' ')
         nb_words_request = len(user_request.split(' '))
-        # print('NB WORD REQUEST: ' + str(nb_words_request))
         products = Product.objects.annotate(search=SearchVector('name')).filter(search=user_request)
-        # print(products)
         if products:
+            print('\nNOMBRE RESULTATS REQUETE: ' + str(len(products)))
             for product in products:
-                score = 0
-                string_product = product.name.replace('-', ' ').split(' ')
+                score, score_2 = 0, 0
+                string_product = product.name.replace('-', ' ').lower().split(' ')
                 for word in string_product:
-                    if word.lower() in user_request.lower():
-                        score += 1
-                score_final = round((score/nb_words_request) * 100)
-                # print('SCORE 1: ' + str(score_final))
-                if score_final >= 100:
-                    score_final_2 = round((score/len(string_product)) * 100)
-                    # print('SCORE 2: ' + str(score_final_2))
-                    score_final = (100 + score_final_2) / 2
-                # print('product: ' + str(string_product) + '   request: ' + request +
-                    #   ' nb_words_request ' + str(nb_words_request))
-                # print(score_final)
+                    score += 1 if word in user_request.lower() else score
+                score_final_1 = round((score/nb_words_request) * 100)
+                for word in user_request.split(' '):
+                    score_2 += 1 if word.lower() in string_product else score_2
+                score_final_2 = round((score_2/len(string_product)) * 100)
+                score_final_1 = 100 if score_final_1 > 100 else score_final_1
+                score_final_2 = 100 if score_final_2 > 100 else score_final_2
+                score_final = (score_final_1 + score_final_2) / 2
+                print('\nREQUETE: ' + str(user_request.split(' ')))
+                print('NOM PRODUIT: ' + str(string_product))
+                print('% mots requête couverts par nom produit: ' + str(score_final_1) +
+                      ' | % nom produit couverts par mots requêtes: ' + str(score_final_2) +
+                      ' | SCORE FINAL: ' + str(score_final) + '\n')
                 if score_final == 100:
-                    scores[score_final] = product.code
-                    winner = Product.objects.get(code=product.code)
-                    category = Category.objects.filter(product__id=winner.id)
-                    return winner, category
+                    category = Category.objects.filter(product__id=product.id)
+                    # Obligé d'aller chercher les catégories dans la table.
+                    # product.category ne renvoie pas le queryset comme il faut
+                    return product, category
                 scores[score_final] = product.code
-            # print(scores)
             if scores:
-                max = 0
+                maxi = 0
                 for key in scores:
-                    if key > max:
-                        max = key
-                winner = Product.objects.get(code=scores[max])
+                    maxi = key if key > maxi else maxi
+                winner = Product.objects.get(code=scores[maxi])
                 category = Category.objects.filter(product__id=winner.id)
                 return winner, category
         else:

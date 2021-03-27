@@ -42,7 +42,7 @@ class ResultsView(TemplateView):
 
     def post(self, request, user_input):
         BookmarksView.as_view()(request)
-        return self.get(request, user_input)
+        return redirect('results', user_input)
 
 
 class ProductView(DetailView):
