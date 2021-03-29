@@ -14,6 +14,7 @@ class HomeView(TemplateView):
     def get(self, request):
         if request.user.is_authenticated and request.user.has_perm('main.add_product'):
             form = HomeForm()
+        url = '../static/img/'
         return render(request, self.template_name, locals())
 
     def post(self, request):

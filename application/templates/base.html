@@ -7,7 +7,7 @@
         <meta name="author" content="" />
         <title>Pur Beurre</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="../../static/img/logo_pur_beurre-favicon.png" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -23,29 +23,49 @@
         <!-- Navigation-->
         <div id="page">
             <!-- Header-->
-            <div id="header">
-                <nav class="navbar navbar-expand-lg navbar-light fixed-top py-2" id="mainNav">
-                    <div class="container">
-                        <a class="navbar-brand js-scroll-trigger" href="#page-top">Pur Beurre</a>
-                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-                            data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-                            aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                        <div class="collapse navbar-collapse" id="navbarResponsive">
-                            <ul class="navbar-nav ml-auto my-2 my-lg-0">
-                                <li class="nav-item"><a href="{% url 'home' %}"><button type='submit' id="button"><span>Rechercher</span></button></a></li>
-                                {% if user.is_authenticated %}
-                                    <!-- <li class="username"> Bonjour, {{ user.first_name }}</li> -->
-                                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'authentication:account' %}">Mon compte</a></li>
-                                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'bookmark:consult' %}">Mes aliments</a></li>
-                                {% else %}
-                                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'authentication:login' %}">Me connecter</a></li>
-                                {% endif %}
-                                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'authentication:logout' %}">Déconnexion</a></li>
-                            </ul>
-                        </div>
+        <div id="header">
+            <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+                    <a class="navbar-brand" href="#page-top">
+                        <img src="../static/img/logo_pur_beurre.png">
+                        <p>Pur Beurre</p>
+                    </a>
+                    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                        data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                        aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                    <div class="collapse navbar-collapse d-flex" id="navbarResponsive">
+                        <ul class="navbar-nav ml-auto my-2 my-lg-0 liste">
+                            <li class="nav-item">
+                                <a href="{% url 'home' %}"><button type='submit' id="button"><span>Rechercher</span></button>
+                                </a>
+                            </li>
+                            {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger" href="{% url 'authentication:account' %}">
+                                    <img class="icon" src="../static/img/account.png">
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger" href="{% url 'bookmark:consult' %}">
+                                    <img class="icon" src="../static/img/bookmarks.png">
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger" href="{% url 'authentication:logout' %}">
+                                    <img class="icon" src="../static/img/logout.png">
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link js-scroll-trigger" href="{% url 'authentication:login' %}">Me connecter
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
                     </div>
                 </nav>
             </div>
+        </div>
             <!-- Content-->
             <div>
                 {% block content %}{% endblock %}

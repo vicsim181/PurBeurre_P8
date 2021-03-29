@@ -8,6 +8,7 @@ class RegisterView(TemplateView):
 
     def get(self, request):
         form = RegisterForm()
+        url = '../../static/img/'
         return render(request, self.template_name, locals())
 
     def post(self, request):
@@ -22,4 +23,5 @@ class ConsultAccountView(TemplateView):
     template_name = 'authentication/account.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        url = '../../static/img/'
+        return render(request, self.template_name, locals())

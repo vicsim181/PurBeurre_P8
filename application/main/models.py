@@ -1,4 +1,5 @@
 import pprint
+from django.db.models.aggregates import Max
 from django.db.models.deletion import CASCADE
 from django.db import models
 from django.utils import timezone
@@ -30,6 +31,10 @@ class Product(models.Model):
     store = models.ManyToManyField(Store)
     popularity = models.IntegerField()
     category = models.ManyToManyField(Category)
+    salt = models.CharField(max_length=10)
+    sugars = models.CharField(max_length=10)
+    saturated = models.CharField(max_length=10)
+    fat = models.CharField(max_length=10)
 
     def __str__(self) -> str:
         return 'product: ' + self.name

@@ -1,3 +1,11 @@
+.result {
+    flex-grow: 1;
+    margin-top: 4.5em;
+    margin-bottom: 2em;
+    display: flex;
+    flex-direction: column;
+}
+
 .suggestions {
   display: flex;
   flex-wrap: wrap;
@@ -14,12 +22,6 @@
     box-shadow: 10px 5px 5px black;
     border-radius: 25% 10%;
     border: solid black;
-}
-
-.head {
-    flex-grow: 1;
-    margin-top: 4.5em;
-    margin-bottom: 2em;
 }
 
 .section {

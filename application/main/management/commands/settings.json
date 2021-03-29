@@ -33,5 +33,5 @@
     },     
     "page_size": 100,
     "fields": [
-        "code,product_name,nutriscore_grade,ingredients_text,url,stores_tags,unique_scans_n,image_url,image_small_url"]
+        "code,product_name,nutriscore_grade,ingredients_text,url,stores_tags,unique_scans_n,image_url,image_small_url,salt_100g,sugars_100g,saturated-fat_100g,fat_100g"]
 }

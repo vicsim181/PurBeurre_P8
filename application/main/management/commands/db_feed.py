@@ -98,7 +98,12 @@ check the url passed in requests and its parameters.')
                               nutriscore=raw_product['nutriscore_grade'],
                               description=raw_product['ingredients_text'],
                               url=raw_product['url'],
-                              popularity=raw_product['unique_scans_n'])
+                              popularity=raw_product['unique_scans_n'],
+                              salt=raw_product['salt_100g'],
+                              sugars=raw_product['sugars_100g'],
+                              saturated=raw_product['saturated-fat_100g'],
+                              fat=raw_product['fat_100g'])
+
             product.save()
             product.category.add(main_category)
             product.category.add(sub_category)

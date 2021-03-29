@@ -10,14 +10,26 @@
     <br>
     <div class="title">
         <h1>{{ product.name.title }}</h1>
+        <img src="{% static img %}img/nutri_{{product.nutriscore}}.png">
     </div>
     <br>
     <div class="infos">
-        <img src="{% static img %}img/nutri_{{product.nutriscore}}.png">
-        <p>{{ product.description }}</p>
+        <div class="details">
+            <p>{{ product.description }}</p>
+        </div>
+        <div class="details">
+            <p>Repères nutritionnels pour 100g:</p>
+            <ul>
+                <li>Sel: {{product.salt}}</li>
+                <li>Sucres: {{product.sugars}}</li>
+                <li>Acides gras saturés: {{product.saturated}}</li>
+                <li>Matières grasses: {{product.fat}}</li>
+            </ul>
+        </div>
     </div>
     <div class="link">
-        <a href="{{ product.url }}"><p>Voir la fiche d'OpenFoodFacts</p></a>
+        <br>
+        <a href="{{ product.url }}"><h4>Voir la fiche d'OpenFoodFacts</h4></a>
     </div>
 </div>
 
