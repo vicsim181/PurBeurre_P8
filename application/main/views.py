@@ -49,3 +49,10 @@ class ResultsView(TemplateView):
 class ProductView(DetailView):
     template_name = 'main/product_detail.html'
     model = Product
+
+
+class MentionsView(TemplateView):
+    template_name = 'mentions.html'
+
+    def get(self, request):
+        return render(request, self.template_name)

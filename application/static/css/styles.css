@@ -3202,7 +3202,7 @@ input[type=button].btn-block {
   display: block;
   padding: 0.5rem 1.5rem;
   margin-bottom: 0;
-  font-size: 0.875rem;
+  font-size: 5.875rem;
   color: #6c757d;
   white-space: nowrap;
 }
@@ -10046,7 +10046,7 @@ hr.light {
 }
 
 .page-section {
-  padding-top: 4.5rem;
+  padding-top: 5rem;
   padding-bottom: 4rem;
 }
 
@@ -10059,15 +10059,15 @@ hr.light {
 #mainNav .navbar-brand {
   font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 700;
-  color: #212529;
-  font-size: 1.7em;
+  color:#dd7932;
+  font-size: 1.3em;
 }
 #mainNav .navbar-nav .nav-item .nav-link {
   color: #6c757d;
   font-family: "Merriweather Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 700;
-  font-size: 1.5rem;
-  /* padding: 0.75rem 0; */
+  font-size: 1.4rem;
+  justify-content: space-evenly;
 }
 #mainNav .navbar-nav .nav-item .nav-link:hover, #mainNav .navbar-nav .nav-item .nav-link:active {
   color: #f4623a;
@@ -10218,11 +10218,31 @@ header.masthead h1 {
   flex-direction: column;
 }
 
-.icon {
-  width: 8%;
+.logo {
+  height: 0.9em;
+  font-size: 1em;
+}
+
+.icon-carrot {
+  height: 1.5em;
   opacity: 0.9;
 }
 
-.liste{
-  justify-content: end;
+.icon {
+  font-size: 1em;
+  height: 1em;
+  size: 1em;
+  opacity: 0.82;
+  color:rgba(255, 127, 39);
+}
+
+.liste {
+  display: flex;
+  justify-content:space-evenly;
+  align-items: flex-start;
+}
+
+.icons {
+  display: flex;
+  justify-content: space-between;
 }

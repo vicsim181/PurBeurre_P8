@@ -7,7 +7,8 @@
         <meta name="author" content="" />
         <title>Pur Beurre</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="../../static/img/logo_pur_beurre-favicon.png" />
+        {% load static %}
+        <link rel="icon" type="image/x-icon" href="{% static 'img/logo_pur_beurre-favicon.png' %}" class="icon" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -16,7 +17,6 @@
         <!-- Third party plugin CSS-->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        {% load static %}
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
     <body id="page-top">
@@ -24,47 +24,48 @@
         <div id="page">
             <!-- Header-->
         <div id="header">
-            <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-                    <a class="navbar-brand" href="#page-top">
-                        <img src="../static/img/logo_pur_beurre.png">
-                        <p>Pur Beurre</p>
-                    </a>
                     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                         data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-                        aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse d-flex" id="navbarResponsive">
-                        <ul class="navbar-nav ml-auto my-2 my-lg-0 liste">
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse liste" id="navbarResponsive">
+                        <a class="navbar-brand js-scroll-trigger" href="#page-top">
+                            <img class="logo" src="{% static 'img/logo_pur_beurre.png' %}" alt=""> Pur Beurre
+                        </a>
+                        <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a href="{% url 'home' %}"><button type='submit' id="button"><span>Rechercher</span></button>
+                                <a class="nav-link js-scroll-trigger" href="{% url 'home' %}">
+                                    <button type='submit' id="button"><span>Rechercher</span></button>
                                 </a>
                             </li>
+                        </ul>
+                        <ul class="navbar-nav ml-auto liste">
                             {% if user.is_authenticated %}
                             <li class="nav-item">
-                                <a class="nav-link js-scroll-trigger" href="{% url 'authentication:account' %}">
-                                    <img class="icon" src="../static/img/account.png">
+                                <a title="Espace personnel" class="nav-link js-scroll-trigger" href="{% url 'authentication:account' %}">
+                                    <i class="fa fa-user fa-2x icon"></i>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link js-scroll-trigger" href="{% url 'bookmark:consult' %}">
-                                    <img class="icon" src="../static/img/bookmarks.png">
-                                </a>
+                                <a title="Mes favoris" class="nav-link js-scroll-trigger" href="{% url 'bookmark:consult' %}">
+                                    <img src="{% static 'img/bookmarks.png' %}" alt="" class="icon-carrot"></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link js-scroll-trigger" href="{% url 'authentication:logout' %}">
-                                    <img class="icon" src="../static/img/logout.png">
-                                </a>
+                                <a title="Se déconnecter" class="nav-link js-scroll-trigger" href="{% url 'authentication:logout' %}"><i
+                                        class="fa fa-sign-out-alt fa-2x icon"></i></a>
                             </li>
                             {% else %}
                             <li class="nav-item">
-                                <a class="nav-link js-scroll-trigger" href="{% url 'authentication:login' %}">Me connecter
+                                <a title="Se connecter" class="nav-link js-scroll-trigger" href="{% url 'authentication:login' %}">
+                                    Me connecter
                                 </a>
                             </li>
                             {% endif %}
                         </ul>
                     </div>
-                </nav>
-            </div>
+            </nav>
         </div>
             <!-- Content-->
             <div>
@@ -75,9 +76,9 @@
                 <footer class="bg-light py-2 fixed-bottom" id="footer">
                     <div class='container-fluid'>
                         <div class="row">
-                            <div class="col-md-4">Mentions légales</div>
+                            <div class="col-md-4"><a href="{% url 'mentions' %}">Mentions légales</a></div>
                             <div class="col-md-4">Copyright © 2021 - Victor SIMON</div>
-                            <div class="col-md-4">Contact</div>
+                            <div class="col-md-4"><a href="{% url 'home' %}#contact">Contact</a></div>
                         </div>
                     </div>
                 </footer>
