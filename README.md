@@ -97,16 +97,15 @@ On Linux:
 
 
 If you wish to modify the categories fed into the table, modify them in the 'settings.py' file. Take note that they are divided like follow:
-
- Main category 1:
-        - Sub category 1
-        - Sub category 2
-        - ...
- Main category 2:
-        - Sub category 1
-        - Sub category 2
-        - ...
+```json
+ "Main category 1": ["Sub category 1",
+                     "Sub category 2",
+                     ...],
+ "Main category 2": ["Sub category 1",
+                     "Sub category 2",
+                     ...],
  ...
+```
 
 Each main category will not be used to extract products or data from the Openfoodfacts database, only the sub categories will be used for this purpose.
 But ordering them this way allows us to settle each product to be referenced in two categories, its sub category and its main category. That way, when the program will look for alternative healthier products, it can search in the sub and main category of the target product.
