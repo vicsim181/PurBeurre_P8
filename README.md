@@ -9,6 +9,7 @@ The application behind the website uses data collected on the [OpenFoodFacts pla
 All the collected data is saved in a database dedicated to this application.
 The user needs to connect in order to look for a product.
 Once connected, the user can search for a product on the main page:
+
 ![home](application/static/img/readme/home.png)
 
 To find the wanted product, the terms of the request need a certain accuracy, using the name of the product and/or its brand.
@@ -16,9 +17,11 @@ Only some categories of product are available, they can be found in the 'setting
 
 Once the product found, the application will propose a maximum of 6 alternative products with a better or same nutriscore.
 The user can click on "Sauvegarder" under each of them and a bookmark will be saved.
+
 ![saving](application/static/img/readme/saving.png)
 
 Each bookmark represents the searched product replaced by the chosen alternative product. The bookmarks can be consulted in the special interface by clicking on the carrot icon on the top right in the navigation bar.
+
 ![bookmarks](application/static/img/readme/bookmarks.png)
 
 The bookmarks can be deleted by clicking "supprimer" on their right part.
@@ -28,7 +31,8 @@ The bookmarks can be deleted by clicking "supprimer" on their right part.
 
 You will need Django in order to use this applicationt will come automatically when extracting the requirements.
 
-Fork this repository or download the files and install the dependencies with:  
+Fork this repository or download the files and install the dependencies with:
+
 On Windows:
 ```bash
 > pip install -r requirements.txt
@@ -64,6 +68,7 @@ Another setting you might want to modify is "TIME ZONE = 'Europe/Paris' " locate
 Once you have defined the name of your database, the user and its password, you can start feeding the database.
 
 First of all be sure to apply the migrations of the models into your database using the appropriate command:
+
 On Windows:
 ```bash
 > py manage.py makemigrations
@@ -75,6 +80,7 @@ On Linux:
 You should see a '0001_initial.py' file created in the 'migrations' folders of each application.
 
 You can then confirm the migrations and apply them to the database by using the following:
+
 On Windows:
 ```bash
 > py manage.py migrate
@@ -89,6 +95,7 @@ Once the migrations effective the tables have been created in your database.
 You will need to use 2 different files located in the folder application/main/management/commands to feed them.
 
 The first file is 'db_create_categories.py', it will create the categories located in the 'settings.py' (that can also be found in the folder application/main/management/commands) into the 'category' table of your database.
+
 On Windows:
 ```bash
 > py manage.py db_create_categories
@@ -115,6 +122,7 @@ But ordering them this way allows us to settle each product to be referenced in 
 
 **If you wish to delete a category from your database (and therefore all the products attached to it), you can use the script 'db_delete_category.py'.**
 **Example to delete the category soda:**
+
 On Windows:
 ```bash
 > py manage.py db_delete_category soda
@@ -136,6 +144,7 @@ The number of products asked to the Openfoodfacts for each sub category is set i
 As well as the fields needed for each products in the parameter "fields". 
 These parameters can be modified as you wish, note that a field added to the 'fields' list that doesn't have its place in the Product model can't be added to the table.
 On Windows:
+
 ```bash
 > py manage.py db_feed
 ```
