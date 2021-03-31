@@ -9,7 +9,7 @@ The application behind the website uses data collected on the OpenFoodFacts plat
 All the collected data is saved in a database dedicated to this application.
 The user needs to connect in order to look for a product.
 Once connected, the user can search for a product on the main page:
-![home](./static/img/readme/home.png)
+![home](application/static/img/readme/home.png)
 
 In order to find the wanted product, the terms of the request need a certain accuracy, using gthe name of the product and/or its brand.
 Only some categories of product are available, they can be found in the 'settings.json' located in the folder application/main/management/commands.
