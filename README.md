@@ -1,7 +1,7 @@
 # **Pur Beurre, the website allowing you to look for healthier food!**
  
 ## What is the objective of this website?
-Behind this website the goal is to allow the user to find healthier products than the ones he already consumes.
+In this website the goal is to allow the user to find healthier products than the ones he already consumes.
 
 ## How does it work?
 
@@ -16,10 +16,10 @@ Only some categories of product are available, they can be found in the 'setting
 
 Once the product found, the application will propose a maximum of 6 alternative products with a better or same nutriscore.
 The user can click on "Sauvegarder" under each of them and a bookmark will be saved.
-![saving](static/img/readme/saving.png)
+![saving](application/static/img/readme/saving.png)
 
 Each bookmark represents the searched product replaced by the chosen alternative product. The bookmarks can be consulted in the special interface by clicking on the carrot icon on the top right in the navigation bar.
-![bookmarks](static/img/readme/bookmarks.png)
+![bookmarks](application/static/img/readme/bookmarks.png)
 
 The bookmarks can be deleted by clicking "supprimer" on their right part.
 
@@ -98,15 +98,15 @@ On Linux:
 
 If you wish to modify the categories fed into the table, modify them in the 'settings.py' file. Take note that they are divided like follow:
 
-- Main category 1:
+ Main category 1:
         - Sub category 1
         - Sub category 2
         - ...
-- Main category 2:
+ Main category 2:
         - Sub category 1
         - Sub category 2
         - ...
-- ...
+ ...
 
 Each main category will not be used to extract products or data from the Openfoodfacts database, only the sub categories will be used for this purpose.
 But ordering them this way allows us to settle each product to be referenced in two categories, its sub category and its main category. That way, when the program will look for alternative healthier products, it can search in the sub and main category of the target product.
