@@ -126,3 +126,7 @@ dmypy.json
 
 # vscode settings
 .vscode/
+
+# pictures
+application/static/img/products
+application/static/img/products_small
