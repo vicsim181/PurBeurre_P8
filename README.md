@@ -1,7 +1,7 @@
 # **Pur Beurre, the website allowing you to look for healthier food!**
  
 ## What is the objective of this website?
-Behind this website  goal is to allow the user to find healthier products than the ones he already consumes.
+Behind this website the goal is to allow the user to find healthier products than the ones he already consumes.
 
 ## How does it work?
 
