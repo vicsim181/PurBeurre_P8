@@ -10,6 +10,7 @@
     <br>
     <div class="title">
         <h1>{{ product.name.title }}</h1>
+        <br>
         <img src="{% static img %}img/nutri_{{product.nutriscore}}.png">
     </div>
     <br>
@@ -26,6 +27,16 @@
                 <li>Matières grasses: {{product.fat}}</li>
             </ul>
         </div>
+    </div>
+    <div class="details">
+        <p>Le produit est disponible dans les magasins suivants:</p>
+        <ul>
+            {% for store in product_stores %}
+            <li>
+                {{store}}
+            </li>
+            {% endfor %}
+        </ul>
     </div>
     <div class="link">
         <br>

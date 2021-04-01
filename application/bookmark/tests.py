@@ -1,3 +1,4 @@
+from django import test
 from bookmark.models import Substitution
 from django.test import TestCase
 from authentication.models import User
@@ -7,6 +8,7 @@ from main.models import Product
 # Create your tests here.
 class BookmarkTests(TestCase):
     """
+    Test class holding the functions testing the Substitution model.
     """
     def setUp(self):
         self.product_source = Product(name="Coca-Cola Classic",
@@ -54,3 +56,20 @@ class BookmarkTests(TestCase):
         print("self.assertQuerysetEqual(test_get_bookmarks, [])")
         self.assertQuerysetEqual(test_get_bookmarks, [])
         print('Assert 1 Done')
+
+    def test_specific_bookmark(self):
+        print("\nTEST - Bookmark --> def specific_bookmark()\n")
+        Substitution.save_bookmark(self.product_source.id, self.product_target.id, self.target_user.id)
+        test_specific = Substitution.specific_bookmark(self.product_source.id, self.product_target.id, self.target_user.id)
+        print("self.assertTrue(Substitution.specific_bookmark(self.product_source.id, self.product_target.id, self.target_user.id))")
+        self.assertTrue(test_specific)
+        print('ASSERT DONE')
+
+    def test_check_favs(self):
+        print("\nTEST - Bookmark --> def check_favs()\n")
+        Substitution.save_bookmark(self.product_source.id, self.product_target.id, self.target_user.id)
+        test_favs = Substitution.check_favs(self.product_source, self.target_user)
+        print('test_favs: ' + str(test_favs))
+        print("self.assertEqual(Substitution.check_favs(self.product_source, self.target_user)[0], 2")
+        self.assertEqual(test_favs[0], 2)
+        print('ASSERT DONE')

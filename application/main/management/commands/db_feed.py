@@ -43,26 +43,15 @@ class Command(BaseCommand):
             page = last_page.page_number + 1
         except ObjectDoesNotExist:
             page = 1
-        # categories = Category.objects.all()
-        # if not categories:
-            # print('The main_category table is empty, please feed it first to extract the categories.')
-            # return
         with open('main/management/commands/settings.json', 'r') as settings:
             self.data = json.load(settings)
         categories_settings = self.data['categories']
-        # cat_set_values = categories_settings.values()
-        # print(cat_set_values)
         self.url = "https://fr.openfoodfacts.org/cgi/search.pl?json=1"
         for main_category in categories_settings:
             for sub_category in categories_settings[main_category]:
-                # print(sub_category)
                 self.parameters = {'search_terms': sub_category, 'page_size': self.data['page_size'],
                                    'page': page, 'fields': self.data['fields']}
                 self.extract_data(main_category, sub_category)
-            # print(main_category)
-            # self.parameters = {'search_terms': main_category, 'page_size': self.data['page_size_main'], 'page': page,
-            #                    'fields': self.data['fields']}
-            # self.extract_data(main_category)
         history = History(page_number=page)
         history.save()
         print('DONE! Database fed on ' + str(datetime.now()) + ' with page ' + str(page))
@@ -116,31 +105,28 @@ check the url passed in requests and its parameters.')
                 pass
             except URLError:
                 pass
-            if "stores_tags" in raw_product:
+            if "stores_tags" in raw_product and raw_product['stores_tags'] != []:
                 for store_element in raw_product['stores_tags']:
-                    store = None
                     for regex in dict:
                         if bool(re.search(regex, store_element, flags=re.I)):
                             try:
                                 store = Store(name=dict[regex])
                                 store.save()
+                                product.store.add(store)
                             except DataError:
                                 pass
                             except IntegrityError:
                                 store = Store.objects.get(name=dict[regex])
-                    if not store:
-                        store = Store.objects.get(id=1)
-                    product.store.add(store)
-            # prod_categories = product.category.all()
-            # if len(prod_categories) < 2:
-                # product.category.add(category)
+                                product.store.add(store)
+            else:
+                store = Store.objects.get(id=1)
+                product.store.add(store)
+            # stores = Store.objects.filter(product__id=product.id)
+            stores = product.store.all()
+            print('product: ' + str(product) + '  | stores: ' + str(stores))
         except KeyError:
             pass
         except DataError:
             pass
         except IntegrityError:
             pass
-            # product = Product.objects.get(code=raw_product['code'])
-            # prod_categories = product.category.all()
-            # if len(prod_categories) < 2:
-            #     product.category.add(category)

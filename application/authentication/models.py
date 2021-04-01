@@ -3,6 +3,9 @@ from django.db import models
 
 
 class CustomUserManager(BaseUserManager):
+    """
+    In order to use a custom User Model inheritating from AbstractBaseUser, we need to create a CustomUserManager.
+    """
     def create_user(self, email, password=None, first_name=None, last_name=None, is_staff=False,
                     is_admin=False, is_active=True):
         if not email:
@@ -51,14 +54,12 @@ class User(AbstractBaseUser):
     objects = CustomUserManager()
 
     def __str__(self) -> str:
-        return self.email
+        return self.first_name + ' ' + self.last_name + ' ' + self.email
 
     def get_full_name(self):
-        if self.full_name:
-            return self.full_name
-        return self.email
+        return self.first_name + ' ' + self.last_name
 
-    def get_short_name(self):
+    def get_email(self):
         return self.email
 
     def has_perm(self, perm, obj=None):
@@ -66,15 +67,3 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
-
-    @property
-    def is_staff(self):
-        return self.staff
-
-    @property
-    def is_admin(self):
-        return self.admin
-
-    @property
-    def is_active(self):
-        return self.active

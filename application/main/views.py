@@ -1,9 +1,10 @@
+import json
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import TemplateView, DetailView, ListView
 from bookmark.views import BookmarksView
 from django.http.response import HttpResponseRedirect
 from main.forms import HomeForm
-from main.models import Product
+from main.models import Product, Store
 from bookmark.models import Substitution
 
 
@@ -50,9 +51,26 @@ class ProductView(DetailView):
     template_name = 'main/product_detail.html'
     model = Product
 
+    def get(self, request, pk):
+        product = Product.objects.get(id=pk)
+        stores = Store.objects.filter(product__id=product.id)
+        product_stores = [store.name for store in stores]
+        print('product_stores: ' + str(product_stores))
+        return render(request, self.template_name, locals())
+
 
 class MentionsView(TemplateView):
     template_name = 'mentions.html'
 
     def get(self, request):
         return render(request, self.template_name)
+
+
+class CategoriesView(TemplateView):
+    template_name = 'main/categories.html'
+
+    def get(self, request):
+        with open('main/management/commands/settings.json', 'r') as settings:
+            data = json.load(settings)
+        categories = data['categories']
+        return render(request, self.template_name, locals())

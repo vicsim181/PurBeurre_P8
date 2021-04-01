@@ -15,6 +15,9 @@
             <div class="col-lg-12 align-self-baseline">
                 <p class="text-white-75 font-weight-light mb-5">N'attendez plus, cherchez un produit dans notre base de
                     données et trouver une meilleure alternative !</p>
+                <a href="{% url 'categories' %}">
+                    <p class="text-white-75 font-weight-light mb-5"><u>Consultez ici les catégories de produits disponibles.</u></p>
+                </a>
             {% if user.is_authenticated and perms.main.add_product %}
                 <div class="col-md-6 offset-md-3">
                     <form method="post">
