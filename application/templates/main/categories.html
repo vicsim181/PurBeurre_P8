@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="page-section body">
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/categories.css' %}">
+<div class="page-section">
+    <div class="body">
     {% if categories %}
-        <h2 class="d-flex justify-content-center">Voici les catégories disponibles:</h2>
+        <h2>Voici les catégories disponibles:</h2>
         <br>
         {% for main, subs in categories.items %}
-            <ul class="d-flex justify-content-center">
+            <ul>
                 <li>
                     {{main.title}}
                     {% for sub in subs %}
@@ -17,8 +20,9 @@
                 </li>
             </ul>
         {% endfor %}
+    </div>
     {% else %}
-        <p class="d-flex justify-content-center">Nous ne disposons pas de catégorie pour le moment.</p>
+        <p>Nous ne disposons pas de catégorie pour le moment.</p>
     {% endif %}
 </div>
 

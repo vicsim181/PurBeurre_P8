@@ -53,7 +53,7 @@ class ProductView(DetailView):
 
     def get(self, request, pk):
         product = Product.objects.get(id=pk)
-        stores = Store.objects.filter(product__id=product.id)
+        stores = product.store.all()
         product_stores = [store.name for store in stores]
         print('product_stores: ' + str(product_stores))
         return render(request, self.template_name, locals())

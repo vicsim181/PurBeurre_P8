@@ -121,9 +121,12 @@ check the url passed in requests and its parameters.')
             else:
                 store = Store.objects.get(id=1)
                 product.store.add(store)
-            # stores = Store.objects.filter(product__id=product.id)
             stores = product.store.all()
-            print('product: ' + str(product) + '  | stores: ' + str(stores))
+            if not stores:
+                store = Store.objects.get(id=1)
+                product.store.add(store)
+            # stores_def = product.store.all()
+            # print('product: ' + str(product) + '  | stores: ' + str(stores_def))
         except KeyError:
             pass
         except DataError:
