@@ -34,7 +34,10 @@ class BookmarksView(TemplateView):
         if aim == 'add':
             Substitution.save_bookmark(source_id, target_id, current_user.id)
         elif aim == 'delete':
-            Substitution.delete_bookmark(source_id=source_id, target_id=target_id, user_id=current_user.id)
+            bookmark_to_delete = Substitution.objects.get(source_product_id=source_id,
+                                                          target_product_id=target_id,
+                                                          user_id=current_user.id)
+            bookmark_to_delete.delete()
             return redirect('bookmark:consult')
         else:
             return

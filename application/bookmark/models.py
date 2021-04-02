@@ -31,10 +31,6 @@ class Substitution(models.Model):
         bookmark_to_save = Substitution(source_product_id=source_id, target_product_id=target_id, user_id=user_id)
         bookmark_to_save.save()
 
-    def delete_bookmark(source_id, target_id, user_id):
-        bookmark_to_delete = Substitution.objects.get(source_product_id=source_id, target_product_id=target_id, user_id=user_id)
-        bookmark_to_delete.delete()
-
     def specific_bookmark(source_id, target_id, user_id):
         try:
             substitution = Substitution.objects.get(source_product_id=source_id, target_product_id=target_id, user_id=user_id)

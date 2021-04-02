@@ -43,20 +43,20 @@ class RegisterTest(TestCase):
         print("Assert Done")
 
 
-# class CustomeUserManagerTest(TestCase):
-#     """
-#     Testing the custom user manager created in the authentication models.
-#     """
-#     def test_create_user(self):
-#         """
-#         Test the create_user function of the custom user manager.
-#         """
-#         test_custom = CustomUserManager()
-#         test_custom.create_user(self, 'essai@gmail.fr', 'essai+123!', 'essai123', 'USER')
-#         user_test = User.objects.get(email='essai@gmail.fr')
-#         print("self.assertEqual(user_test.first_name, 'essai123')")
-#         self.assertEqual(user_test.first_name, 'essai123')
-#         print("Assert Done")
+class CustomeUserManagerTest(TestCase):
+    """
+    Testing the custom user manager created in the authentication models.
+    """
+    def test_create_user(self):
+        """
+        Test the create_user function of the custom user manager.
+        """
+        test_custom = CustomUserManager()
+        test_custom.create_user(self, 'essai@gmail.fr', 'essai+123!', 'essai123', 'USER')
+        user_test = User.objects.get(email='essai@gmail.fr')
+        print("self.assertEqual(user_test.first_name, 'essai123')")
+        self.assertEqual(user_test.first_name, 'essai123')
+        print("Assert Done")
         #  Result when testing:
         #         ERROR: test_create_user (authentication.tests.CustomeUserManagerTest)
         # ----------------------------------------------------------------------

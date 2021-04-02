@@ -5,9 +5,8 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.postgres.search import SearchVector
 
+
 # Create your models here.
-
-
 class Store(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
@@ -54,7 +53,6 @@ class Product(models.Model):
         nb_words_request = len(user_request.split(' '))
         products = Product.objects.annotate(search=SearchVector('name')).filter(search=user_request)
         if products:
-            print('\nNOMBRE RESULTATS REQUETE: ' + str(len(products)))
             for product in products:
                 score, score_2 = 0, 0
                 string_product = product.name.replace('-', ' ').lower().split(' ')
@@ -67,15 +65,8 @@ class Product(models.Model):
                 score_final_1 = 100 if score_final_1 > 100 else score_final_1
                 score_final_2 = 100 if score_final_2 > 100 else score_final_2
                 score_final = (score_final_1 + score_final_2) / 2
-                print('\nREQUETE: ' + str(user_request.split(' ')))
-                print('NOM PRODUIT: ' + str(string_product))
-                print('% mots requête couverts par nom produit: ' + str(score_final_1) +
-                      ' | % nom produit couverts par mots requêtes: ' + str(score_final_2) +
-                      ' | SCORE FINAL: ' + str(score_final) + '\n')
                 if score_final == 100:
-                    category = Category.objects.filter(product__id=product.id)
-                    # Obligé d'aller chercher les catégories dans la table.
-                    # product.category ne renvoie pas le queryset comme il faut
+                    category = product.category.all()
                     return product, category
                 scores[score_final] = product.code
             if scores:
@@ -83,7 +74,7 @@ class Product(models.Model):
                 for key in scores:
                     maxi = key if key > maxi else maxi
                 winner = Product.objects.get(code=scores[maxi])
-                category = Category.objects.filter(product__id=winner.id)
+                category = product.category.all()
                 return winner, category
         else:
             return None, None
@@ -92,7 +83,6 @@ class Product(models.Model):
         """
         Function looking for the suggestions in the chosen category.
         """
-        # print('BEGIN LOOKING FOR SUGGESTION')
         results = Product.objects.filter(category=categories[j].id, nutriscore=target_nutriscore)
         nb = [element for element in results]
         nb.remove(winner_code) if winner_code in nb else None
@@ -102,7 +92,6 @@ class Product(models.Model):
         """
         Function formating and generating the chosen suggestions.
         """
-        # print("BEGIN GENERATE_SUGGESTION")
         nutri = ['a', 'b', 'c', 'd', 'e']
         pre_suggestions = []
         i = 0
@@ -112,7 +101,6 @@ class Product(models.Model):
         elif len_cat == 2:
             j = 1
         while len(pre_suggestions) < 6:
-            # print('WINNER NUTRI: ' + winner.nutriscore + '    NUTRI TARGET: ' + nutri[0+i])
             if winner.nutriscore == nutri[0 + i]:
                 if pre_suggestions != []:
                     if len(pre_suggestions) < 6:
@@ -124,13 +112,11 @@ class Product(models.Model):
                     return 0
                 else:
                     j, i = 0, 0
-            # print('I J: ' + str(i) + ' ' + str(j))
             results = Product.looking_for_suggestion(winner.code, nutri[0 + i], categories, j)
             for element in results:
                 pre_suggestions.append(element)
             i += 1
         if pre_suggestions != []:
-            # print(pre_suggestions)
             suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions[:6]]
             return suggestions
         else:
