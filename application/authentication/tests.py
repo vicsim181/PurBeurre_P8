@@ -1,7 +1,7 @@
 from django import test
 from django.http import request
 from django.test import TestCase, Client
-from .models import CustomUserManager, User
+from .models import User
 
 
 # Create your tests here.
@@ -41,30 +41,3 @@ class RegisterTest(TestCase):
         print("self.assertEqual(user_test.get_email(), 'essai@gmail.com')")
         self.assertEqual(user_test.get_email(), 'essai@gmail.com')
         print("Assert Done")
-
-
-class CustomeUserManagerTest(TestCase):
-    """
-    Testing the custom user manager created in the authentication models.
-    """
-    def test_create_user(self):
-        """
-        Test the create_user function of the custom user manager.
-        """
-        test_custom = CustomUserManager()
-        test_custom.create_user(self, 'essai@gmail.fr', 'essai+123!', 'essai123', 'USER')
-        user_test = User.objects.get(email='essai@gmail.fr')
-        print("self.assertEqual(user_test.first_name, 'essai123')")
-        self.assertEqual(user_test.first_name, 'essai123')
-        print("Assert Done")
-        #  Result when testing:
-        #         ERROR: test_create_user (authentication.tests.CustomeUserManagerTest)
-        # ----------------------------------------------------------------------
-        # Traceback (most recent call last):
-        #   File "D:\onedrive\formation opcr\p8\github\application\authentication\tests.py", line 51, in test_create_user
-        #     test_custom.create_user(self, 'essai@gmail.fr', 'essai+123!', 'essai123', 'USER')
-        #   File "D:\onedrive\formation opcr\p8\github\application\authentication\models.py", line 17, in create_user
-        #     user_obj = self.model(email=self.normalize_email(email))
-        #   File "D:\onedrive\formation opcr\p8\github\env\lib\site-packages\django\contrib\auth\base_user.py", line 26, in normalize_email
-        #     email_name, domain_part = email.strip().rsplit('@', 1)
-        # AttributeError: 'CustomeUserManagerTest' object has no attribute 'strip'

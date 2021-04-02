@@ -1,57 +1,17 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 
 
-class CustomUserManager(BaseUserManager):
-    """
-    In order to use a custom User Model inheritating from AbstractBaseUser, we need to create a CustomUserManager.
-    """
-    def create_user(self, email, password=None, first_name=None, last_name=None, is_staff=False,
-                    is_admin=False, is_active=True):
-        if not email:
-            raise ValueError('Vous devez renseigner une adresse email pour vous inscrire.')
-        if not password:
-            raise ValueError('Vous devez renseigner un mot de passe pour vous inscrire.')
-        if not first_name:
-            raise ValueError('Vous devez renseigner un prénom pour vous inscrire.')
-        if not last_name:
-            raise ValueError('Vous devez renseigner un nom de famille pour vous inscrire.')
-
-        user_obj = self.model(email=self.normalize_email(email))
-        user_obj.set_password(password)
-        user_obj.first_name = first_name
-        user_obj.last_name = last_name
-        user_obj.staff = is_staff
-        user_obj.admin = is_admin
-        user_obj.active = is_active
-        user_obj.save(using=self._db)
-        return user_obj
-
-    def create_staffuser(self, email, password=None):
-        user = self.create_user(
-            email, password=password, is_staff=True
-        )
-        return user
-
-    def create_superuser(self, email, password=None):
-        user = self.create_user(
-            email, password=password, first_name='super', last_name='user', is_staff=True, is_admin=True
-        )
-        return user
-
-
-class User(AbstractBaseUser):
-    username = None
+class User(AbstractUser):
+    username = models.CharField(default='', max_length=20)
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     active = models.BooleanField(default=True)
-    staff = models.BooleanField(default=False)
-    admin = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
-    objects = CustomUserManager()
+    REQUIRED_FIELDS = ['username']
+    objects = UserManager()
 
     def __str__(self) -> str:
         return self.first_name + ' ' + self.last_name + ' ' + self.email
