@@ -40,6 +40,7 @@ class Product(models.Model):
 
     def retrieve_prod_with_pk(pk):
         """
+        retrieves a product with its primary key
         """
         product = Product.objects.get(pk=pk)
         return product
@@ -95,32 +96,28 @@ class Product(models.Model):
         nutri = ['a', 'b', 'c', 'd', 'e']
         pre_suggestions = []
         i = 0
-        len_cat = len(categories)
-        if len_cat == 1:
-            j = 0
-        elif len_cat == 2:
-            j = 1
+        j = 1
         while len(pre_suggestions) < 6:
-            if winner.nutriscore == nutri[0 + i]:
-                if pre_suggestions != []:
-                    if len(pre_suggestions) < 6:
-                        suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions[:len(pre_suggestions)]]
-                    else:
-                        suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions[:6]]
-                        return suggestions
-                if j == 0 and j == 0:
-                    return 0
-                else:
-                    j, i = 0, 0
             results = Product.looking_for_suggestion(winner.code, nutri[0 + i], categories, j)
-            for element in results:
-                pre_suggestions.append(element)
-            i += 1
-        if pre_suggestions != []:
-            suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions[:6]]
-            return suggestions
-        else:
-            return 0
+            if winner.nutriscore == nutri[0 + i]:
+                if i == 0 and j == 0:
+                    return 0
+                if pre_suggestions != []:
+                    suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions]
+                    if j == 1:
+                        j, i = 0, 0
+                    else:
+                        return suggestions
+                elif pre_suggestions == [] and j == 0:
+                    return 0
+                elif pre_suggestions == [] and j == 1:
+                    j, i = 0, 0
+            else:
+                for element in results:
+                    pre_suggestions.append(element)
+                i += 1
+        suggestions = [Product.objects.get(code=element.code) for element in pre_suggestions[:6]]
+        return suggestions
 
 
 class History(models.Model):

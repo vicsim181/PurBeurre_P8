@@ -1,14 +1,15 @@
 import json
-from os import name
 import pprint
 from django.db import IntegrityError, transaction
 from django.db.utils import DataError
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from urllib.error import HTTPError, URLError
-from .models import Product, Category
+from .models import Product, Category, Store
+from .views import HomeView, ResultsView, ProductView, MentionsView, CategoriesView
 from django.core.management.base import CommandError
 from django.core.management import call_command
 from io import StringIO
+from authentication.models import User
 
 
 # Create your tests here.
@@ -59,13 +60,16 @@ class ProductModelTests(TestCase):
         print("\nTEST - Product --> def retrieve_product()\n")
         target_1 = '5449000169327'  # Coca Cola zéro sans caféine
         target_2 = '3449860415703'  # Petits Bâtons de Berger Nature
-        target_3 = '3176582033334'  # camembert au lait pasteurisé
+        target_3 = '3176582033334'  # Camembert au lait pasteurisé
+        target_4 = '5000112558272'
         request_1 = 'zéro coca-cola caféine'
         request_2 = 'berger bâtons petits nature'
         request_3 = 'lait camembert pasteurisé'
+        request_4 = 'coca cola'
         result_1, cat_1 = Product.retrieve_product(request_1)
         result_2, cat_2 = Product.retrieve_product(request_2)
         result_3, cat_3 = Product.retrieve_product(request_3)
+        result_4, cat_4 = Product.retrieve_product(request_4)
         print("self.assertEqual(result_1.code, '5449000169327')")
         self.assertEqual(result_1.code, target_1)
         print('assert 1 DONE')
@@ -75,6 +79,26 @@ class ProductModelTests(TestCase):
         print("self.assertEqual(result_3.code, '3176582033334')")
         self.assertEqual(result_3.code, target_3)
         print('assert 3 DONE')
+        print("self.assertEqual(result_4.code, '5000112558272')")
+        self.assertEqual(result_4.code, target_4)
+        print('assert 4 DONE')
+        product_test = Product.objects.get(code=target_3)
+        print("self.assertEqual(print(product_test), 'product: Camembert au lait pasteurisé')")
+        self.assertEqual(product_test.__str__(), 'product: Camembert au lait pasteurisé')
+        print('assert 5 DONE')
+
+    def test_retrieve_product_with_pk(self):
+        """
+        retrieve_prod_with_pk() returns the product matching with the pk, if it exists.
+        """
+        print("\nTEST - Product --> def retrieve_prod_with_pk()\n")
+        print("camembert = Product.objects.get(code='3176582033334')")
+        camembert = Product.objects.get(code='3176582033334')
+        print("test_product = Product.retrieve_prod_with_pk(camembert.id)")
+        test_product = Product.retrieve_prod_with_pk(camembert.id)
+        print("self.assertEqual(test_product.__str__(), 'product: Camembert au lait pasteurisé')")
+        self.assertEqual(test_product.__str__(), 'product: Camembert au lait pasteurisé')
+        print("ASSERT DONE")
 
     def test_looking_for_suggestion(self):
         """
@@ -97,28 +121,35 @@ class ProductModelTests(TestCase):
         """
         print("\nTEST - Product --> def generate_suggestions()\n")
         request_1 = 'zéro coca-cola caféine'
-        request_2 = 'berger bâtons petits nature'
+        request_2 = 'Spécialité saucisson sec'
         request_3 = 'lait camembert pasteurisé'
+        request_4 = 'Coca-Cola Zero Factice'
         result_1, cat_1 = Product.retrieve_product(request_1)
         result_2, cat_2 = Product.retrieve_product(request_2)
         result_3, cat_3 = Product.retrieve_product(request_3)
+        result_4, cat_4 = Product.retrieve_product(request_4)
         suggestions_1 = Product.generate_suggestions(cat_1, result_1)
         suggestions_2 = Product.generate_suggestions(cat_2, result_2)
         suggestions_3 = Product.generate_suggestions(cat_3, result_3)
-        print("self.assertEqual(suggestions for 'zéro coca-cola caféine', 0")
-        self.assertEqual(suggestions_1, 0)
+        suggestions_4 = Product.generate_suggestions(cat_4, result_4)
+        print("self.assertEqual(suggestions for 'zéro coca-cola caféine', 'Coca-Cola Zero Factice')")
+        self.assertEqual(suggestions_1[0].name, 'Coca-Cola Zero Factice')
         print("ASSERT 1 DONE")
-        print("self.assertEqual(name of first suggestion for 'berger bâtons petits nature', 'Fine saveur de viande séchée'")
-        self.assertEqual(suggestions_2[0].name, 'Fine saveur de viande séchée')
+        print("self.assertEqual(name of first suggestion for 'berger bâtons petits nature', 0")
+        self.assertEqual(suggestions_2, 0)
         print("ASSERT 2 DONE")
         print("self.assertEqual(name of first suggestion for 'lait camembert pasteurisé', 'SKYR'")
         self.assertEqual(suggestions_3[0].name, 'SKYR')
         print("ASSERT 3 DONE")
+        print("self.assertEqual(suggestions for 'Coca-Cola Zero Factice', 0)")
+        self.assertEqual(suggestions_4, 0)
+        print("ASSERT 4 DONE")
 
 
 class DatabaseCommandsTests(TestCase):
     """
     Test functions for the database custom commands.
+    Also holds a test for the __str__() function of the Category Model.
     """
     def setUp(self):
         out = StringIO()
@@ -174,6 +205,9 @@ class DatabaseCommandsTests(TestCase):
         print("self.assertIn(str(grape.id), '37')")
         self.assertIn(str(grape.id), '37')
         print('grape DONE')
+        print("self.assertEqual(print(grape), 'category: jus de raisin')")
+        self.assertEqual(grape.__str__(), 'category: jus de raisin')
+        print('ASSERT DONE')
 
     def test_db_delete_category(self):
         """
@@ -212,3 +246,40 @@ class DatabaseCommandsTests(TestCase):
         print("self.assertEqual(result from retrieve_product('soja greek style'), None)")
         self.assertEqual(result_product, None)
         print('Assert 3 Done')
+
+
+class StoreModelTests(TestCase):
+    """
+    Test class for the Store Model.
+    """
+    def setUp(self):
+        store = Store(name='Auchan')
+        store.save()
+
+    def test_str_(self):
+        print("\nTEST - Store --> def __str__()\n")
+        store = Store.objects.get(name="Auchan")
+        print("self.assertEqual(print(store), 'store: Auchan')")
+        self.assertEqual(store.__str__(), "store: Auchan")
+        print("ASSERT DONE")
+
+
+class HomeViewTests(TestCase):
+    """
+    Test class for the views in main/views.py
+    """
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(username='test', email='essaitest@gmail.fr', password='essaimdp+88')
+
+    def test_homeview_get(self):
+        print("\nTEST - HOMEVIEW --> def get()\n")
+        request = self.factory.get('')
+        request.user = self.user
+        response = HomeView.as_view()(request)
+        print("self.assertEqual(response.status_code, 200)")
+        self.assertEqual(response.status_code, 200)
+        print('Assert Done')
+
+    def test_homeview_post(self):
+        print("\nTEST - HOMEVIEW --> def post()\n")

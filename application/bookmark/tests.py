@@ -60,10 +60,14 @@ class BookmarkTests(TestCase):
     def test_specific_bookmark(self):
         print("\nTEST - Bookmark --> def specific_bookmark()\n")
         Substitution.save_bookmark(self.product_source.id, self.product_target.id, self.target_user.id)
-        test_specific = Substitution.specific_bookmark(self.product_source.id, self.product_target.id, self.target_user.id)
+        test_specific_1 = Substitution.specific_bookmark(self.product_source.id, self.product_target.id, self.target_user.id)
         print("self.assertTrue(Substitution.specific_bookmark(self.product_source.id, self.product_target.id, self.target_user.id))")
-        self.assertTrue(test_specific)
-        print('ASSERT DONE')
+        self.assertTrue(test_specific_1)
+        print('ASSERT 1 DONE')
+        print("self.assertFalse(Substitution.specific_bookmark(5620, 5621, 12))")
+        test_specific_2 = Substitution.specific_bookmark(5620, 5621, 12)
+        self.assertFalse(test_specific_2)
+        print("ASSERT 2 DONE")
 
     def test_check_favs(self):
         print("\nTEST - Bookmark --> def check_favs()\n")
