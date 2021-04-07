@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.db.utils import DataError
+from django.contrib.auth.models import Group, Permission
 import requests
 import json
 import urllib.request as urlreq
@@ -125,8 +126,6 @@ check the url passed in requests and its parameters.')
             if not stores:
                 store = Store.objects.get(id=1)
                 product.store.add(store)
-            # stores_def = product.store.all()
-            # print('product: ' + str(product) + '  | stores: ' + str(stores_def))
         except KeyError:
             pass
         except DataError:

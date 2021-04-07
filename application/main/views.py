@@ -1,10 +1,9 @@
 import json
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, DetailView, ListView
+from django.views.generic import TemplateView, DetailView
 from bookmark.views import BookmarksView
-from django.http.response import HttpResponseRedirect
 from main.forms import HomeForm
-from main.models import Product, Store
+from main.models import Product
 from bookmark.models import Substitution
 
 

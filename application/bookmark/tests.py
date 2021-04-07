@@ -1,8 +1,9 @@
-from django import test
 from bookmark.models import Substitution
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from authentication.models import User
 from main.models import Product
+from .models import Substitution
+from .views import BookmarksView
 
 
 # Create your tests here.
@@ -77,3 +78,82 @@ class BookmarkTests(TestCase):
         print("self.assertEqual(Substitution.check_favs(self.product_source, self.target_user)[0], 2")
         self.assertEqual(test_favs[0], 2)
         print('ASSERT DONE')
+
+
+class TestBookmarksView(TestCase):
+    """
+    Test class for BookmarksView.
+    """
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(username='test',
+                                             email='essaitest@gmail.fr',
+                                             password='essaimdp+88')
+        product = Product(name="Coca cola 1L",
+                          code="5449000054227",
+                          nutriscore="e",
+                          url="https://fr.openfoodfacts.org/produit/5449000054227/coca-cola",
+                          popularity=561,)
+        product.save()
+        product = Product(name="Coca Zéro",
+                          code="5449000133328",
+                          nutriscore="b",
+                          url="https://fr.openfoodfacts.org/produit/5449000133328/coca-zero-coca-cola",
+                          popularity=538,)
+        product.save()
+
+    def test_bookmarksview_get(self):
+        print("\nTEST - BOOKMARKSVIEW --> def get()\n")
+        substitution = Substitution(source_product_id=Product.objects.get(code="5449000133328").id,
+                                    target_product_id=Product.objects.get(code="5449000054227").id,
+                                    user_id=self.user.id,)
+        substitution.save()
+        request = self.factory.get('consult/', )
+        request.user = self.user
+        response = BookmarksView.as_view()(request)
+        print("self.assertEqual(response.status_code, 200)")
+        self.assertEqual(response.status_code, 200)
+        print('Assert Done')
+
+    def test_bookmarksview_post(self):
+        print("\nTEST - BOOKMARKSVIEW --> def post() --> add bookmark\n")
+        data = {
+            'aim': 'add',
+            'current_user': self.user,
+            'product_id': 11,
+            'suggestion_id': 12,
+        }
+        request = self.factory.post('consult/', data)
+        request.user = self.user
+        BookmarksView.as_view()(request)
+        bookmark_test = Substitution.objects.get(user_id=self.user.id)
+        print("self.assertEqual(bookmark_test.source_product_id, 11)")
+        self.assertEqual(bookmark_test.source_product_id, 11)
+        print("ASSERT DONE")
+        print("\nTEST - BOOKMARKSVIEW --> def post() --> delete bookmark\n")
+        data = {
+            'aim': 'delete',
+            'current_user': self.user,
+            'product_id': 11,
+            'suggestion_id': 12,
+        }
+        request = self.factory.post('consult/', data)
+        request.user = self.user
+        response = BookmarksView.as_view()(request)
+        bookmark_test = Substitution.objects.all()
+        print("self.assertIsNone(bookmark_test)")
+        self.assertQuerysetEqual(bookmark_test, [])
+        print("ASSERT DONE")
+        print("self.assertEqual(response, 302)")
+        self.assertEqual(response.status_code, 302)
+        print("ASSERT DONE")
+        print("\nTEST - BOOKMARKSVIEW --> def post() --> empty 'aim'\n")
+        data = {
+            'aim': '',
+            'current_user': self.user,
+            'product_id': 11,
+            'suggestion_id': 12,
+        }
+        request = self.factory.post('consult/', data)
+        request.user = self.user
+        BookmarksView.as_view()(request)

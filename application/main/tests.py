@@ -9,7 +9,9 @@ from .views import HomeView, ResultsView, ProductView, MentionsView, CategoriesV
 from django.core.management.base import CommandError
 from django.core.management import call_command
 from io import StringIO
+from django.urls import reverse
 from authentication.models import User
+from unittest.mock import MagicMock
 
 
 # Create your tests here.
@@ -266,7 +268,7 @@ class StoreModelTests(TestCase):
 
 class HomeViewTests(TestCase):
     """
-    Test class for the views in main/views.py
+    Test class for HomeView.
     """
     def setUp(self):
         self.factory = RequestFactory()
@@ -281,5 +283,113 @@ class HomeViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         print('Assert Done')
 
-    def test_homeview_post(self):
-        print("\nTEST - HOMEVIEW --> def post()\n")
+    # def test_homeview_post(self):
+    #     print("\nTEST - HOMEVIEW --> def post()\n")
+    #     # with mock.patch
+    #     # response = self.client.post(reverse('home'), {
+    #     #     'form': 'saucisson sec',
+    #     # })
+    #     request = self.factory.post('results/', {'text': 'saucisson sec'})
+    #     request.user = self.user
+    #     response = HomeView.as_view()(request)
+    #     print("self.assertEqual(response.status_code, 302)")
+    #     self.assertEqual(response.status_code, 302)
+    #     print('Assert Done')
+    #     # self.assertRedirects(response, reverse('main.views.results'))
+    #     # print('Assert Done')
+# DIFFICULTE A MOCKER LE FORM
+
+
+class ResultsViewTests(TestCase):
+    """
+    Test class for ResultsView.
+    """
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(username='test', email='essaitest@gmail.fr', password='essaimdp+88')
+
+    def test_resultview_get(self):
+        print("\nTEST - RESULTVIEW --> def get()\n")
+        request = self.factory.get('results/', )
+        request.user = self.user
+        response = ResultsView.as_view()(request, user_input='saucisson sec')
+        print("self.assertEqual(response.status_code, 200)")
+        self.assertEqual(response.status_code, 200)
+        print('Assert Done')
+
+    def test_resultview_post(self):
+        print("\nTEST - RESULTVIEW --> def post()\n")
+        request = self.factory.post('results/', )
+        request.user = self.user
+        response = ResultsView.as_view()(request, user_input='saucisson sec')
+        print("self.assertEqual(response.status_code, 302)")
+        self.assertEqual(response.status_code, 302)
+        print('Assert Done')
+
+
+class ProductViewTests(TestCase):
+    """
+    Test class for ProductView.
+    """
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(username='test',
+                                             email='essaitest@gmail.fr',
+                                             password='essaimdp+88',
+                                             is_staff=True)
+
+    def test_productview_get(self):
+        print("\nTEST - PRODUCTVIEW --> def get()\n")
+        request = self.factory.post('product/', )
+        request.user = self.user
+        response = ProductView.as_view()(request, pk=1)
+        print("self.assertEqual(response.status_code, 200)")
+        self.assertEqual(response.status_code, 200)
+        print('Assert Done')
+        #  FAIL: test_productview_get (main.tests.ProductViewTests)
+        # ----------------------------------------------------------------------
+        # Traceback (most recent call last):
+        #   File "D:\onedrive\formation opcr\p8\github\application\main\tests.py", line 346, in test_productview_get
+        #     self.assertEqual(response.status_code, 200)
+        # AssertionError: 405 != 200
+# TROUVER POURQUOI HTTP 405, BESOIN DE CREER PRODUIT DANS UNE TABLE ?
+
+
+class TestMentionsView(TestCase):
+    """
+    Test class for the MentionsView.
+    """
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(username='test',
+                                             email='essaitest@gmail.fr',
+                                             password='essaimdp+88')
+
+    def test_mentionsview_get(self):
+        print("\nTEST - MENTIONSVIEW --> def get()\n")
+        request = self.factory.get('mentionslegales/', )
+        request.user = self.user
+        response = MentionsView.as_view()(request)
+        print("self.assertEqual(response.status_code, 200)")
+        self.assertEqual(response.status_code, 200)
+        print('Assert Done')
+
+
+class TestCategoriesView(TestCase):
+    """
+    Test class for CategoriesView.
+    """
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.user = User.objects.create_user(username='test',
+                                             email='essaitest@gmail.fr',
+                                             password='essaimdp+88')
+
+    def test_categoriesview_get(self):
+        print("\nTEST - CATEGORIESVIEW --> def get()\n")
+        request = self.factory.get('categories/', )
+        request.user = self.user
+        response = CategoriesView.as_view()(request)
+        print("self.assertEqual(response.status_code, 200)")
+        self.assertEqual(response.status_code, 200)
+        print('Assert Done')
