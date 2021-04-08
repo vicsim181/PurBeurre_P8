@@ -65,13 +65,21 @@ class TestRegisterView(TestCase):
         self.assertEqual(response.status_code, 200)
         print('Assert Done')
 
-    def test_registerview_post(self):
-        print("\nTEST - REGISTERVIEW --> def post()\n")
-        with mock.patch('views.RegisterForm.is_valid') as mocked_form:
-            mocked_form.return_value = True
-            request = self.factory.post(reverse('register'), data={})
-            response = RegisterView.as_view()(request)
-            self.assertEqual(response.status_code, 200)
+    @patch('authentication.views.RegisterView.form_class', autospec=RegisterForm)
+    def test_registerview_post(self, mocked_form_class):
+        mocked_form_class.is_valid.return_value = True
+        request = self.factory.post('register/', data={})
+        response = RegisterView.as_view()(request)
+        self.assertEqual(response.status_code, 302)
+        #RequestFactory ne permet pas de suivre les redirections sinon il faut utiliser self.client()        
+
+    # def test_registerview_post(self):
+    #     print("\nTEST - REGISTERVIEW --> def post()\n")
+    #     with mock.patch('authentication.views.RegisterView.form') as mocked_form:
+    #         mocked_form.return_value = True
+    #         request = self.factory.post(reverse('register'), data={})
+    #         response = RegisterView.as_view()(request)
+    #         self.assertEqual(response.status_code, 200)
 
 
 class TestConsultAccountView(TestCase):
