@@ -1,35 +1,26 @@
 import json
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import TemplateView, DetailView
-from bookmark.views import BookmarksView
-from main.forms import HomeForm
-from main.models import Product
+from django.views.generic.edit import FormView
+from django import forms
+from .models import Product
 from bookmark.models import Substitution
 
 
 # Create your views here.
-class HomeView(TemplateView):
+class HomeView(FormView):
     template_name = 'main/index.html'
-
-    def get(self, request):
-        if request.user.is_authenticated and request.user.has_perm('main.add_product'):
-            form = HomeForm()
-        url = '../static/img/'
-        return render(request, self.template_name, locals())
-
-    def post(self, request):
-        form = HomeForm(request.POST)
-        if form.is_valid():
-            text = form.cleaned_data['post']
-            form = HomeForm()
-        return redirect('results', text)
+    form_class = forms.Form
 
 
 class ResultsView(TemplateView):
     template_name = 'main/results.html'
 
-    def get(self, request, user_input):
-        current_user = request.user
+    def get_context_data(self, **kwargs):
+        context = super(ResultsView, self).get_context_data(**kwargs)
+        current_user = self.request.user
+        user_input = self.request.GET.get('recherche')
+        print(user_input)
         product, category = Product.retrieve_product(user_input)
         if product:
             suggestions = Product.generate_suggestions(category, product)
@@ -37,13 +28,13 @@ class ResultsView(TemplateView):
         else:
             suggestions = None
             user_favs = []
-        url = '../static/img/'
-        context = {'user_favs': user_favs, 'product': product, 'suggestions': suggestions, 'category': category, 'url': url}
-        return render(request, self.template_name, context=context)
-
-    def post(self, request, user_input):
-        BookmarksView.as_view()(request)
-        return redirect('results', user_input)
+        # url = '../static/img/'
+        context['user_favs'] = user_favs
+        context['product'] = product
+        context['suggestions'] = suggestions
+        context['category'] = category
+        # context['url_image'] = url
+        return context
 
 
 class ProductView(DetailView):
@@ -60,9 +51,6 @@ class ProductView(DetailView):
 
 class MentionsView(TemplateView):
     template_name = 'mentions.html'
-
-    def get(self, request):
-        return render(request, self.template_name)
 
 
 class CategoriesView(TemplateView):

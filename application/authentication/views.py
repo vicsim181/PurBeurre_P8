@@ -5,31 +5,22 @@ from .forms import RegisterForm
 
 
 class RegisterView(FormView):
-    template_name = 'authentication/register.html' # comme un get() integré
-    form_class = RegisterForm # notre formulaire
-    success_url = 'success' # url de notre page de success
-    
-    # def get(self, request):
-    #     form = RegisterForm()
-    #     url = '../../static/img/'
-    #     return render(request, self.template_name, locals())
-    # def form_is_valid(self, form)
+    template_name = 'authentication/register.html'  # comme un get() integré
+    form_class = RegisterForm  # notre formulaire
+    success_url = 'success'  # url de notre page de success
 
-    
-    # def post(self, request):
-    #     form = RegisterForm(request.POST)
-    #     if form.is_valid():
-    #         form.save()
-    #         return render(request, 'authentication/registered.html')
-    #     return render(request, self.template_name, locals())
+    def form_valid(self, form: form_class):
+        form.save()
+        return super().form_valid(form)
 
-# notre page success
+
 class SuccessView(TemplateView):
-    template_name = 'authentication/register.html'
+    template_name = 'authentication/registered.html'
+
 
 class ConsultAccountView(TemplateView):
     template_name = 'authentication/account.html'
 
     def get(self, request):
-        url = '../../static/img/'
+        # url = '../../static/img/'
         return render(request, self.template_name, locals())

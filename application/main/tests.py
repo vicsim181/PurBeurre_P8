@@ -1,21 +1,16 @@
 import json
-import pprint
 from django.db import IntegrityError, transaction
 from django.db.utils import DataError
 from django.test import TestCase, RequestFactory
 from urllib.error import HTTPError, URLError
 from .models import Product, Category, Store
 from .views import HomeView, ResultsView, ProductView, MentionsView, CategoriesView
-from django.core.management.base import CommandError
 from django.core.management import call_command
 from io import StringIO
-from django.urls import reverse
 from authentication.models import User
-from unittest.mock import MagicMock
 
 
 # Create your tests here.
-
 class ProductModelTests(TestCase):
     """
     Class of tests functions for the Product model.
@@ -283,22 +278,6 @@ class HomeViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         print('Assert Done')
 
-    # def test_homeview_post(self):
-    #     print("\nTEST - HOMEVIEW --> def post()\n")
-    #     # with mock.patch
-    #     # response = self.client.post(reverse('home'), {
-    #     #     'form': 'saucisson sec',
-    #     # })
-    #     request = self.factory.post('results/', {'text': 'saucisson sec'})
-    #     request.user = self.user
-    #     response = HomeView.as_view()(request)
-    #     print("self.assertEqual(response.status_code, 302)")
-    #     self.assertEqual(response.status_code, 302)
-    #     print('Assert Done')
-    #     # self.assertRedirects(response, reverse('main.views.results'))
-    #     # print('Assert Done')
-# DIFFICULTE A MOCKER LE FORM
-
 
 class ResultsViewTests(TestCase):
     """
@@ -307,23 +286,52 @@ class ResultsViewTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.user = User.objects.create_user(username='test', email='essaitest@gmail.fr', password='essaimdp+88')
+        out = StringIO()
+        call_command('db_create_categories', stdout=out)
+        with open('main/mock_tests_product.json', 'r') as mock_products:
+            data = json.load(mock_products)
+        test_categories = data['categories']
+        for key in test_categories:
+            for sub in test_categories[key]:
+                sub_category_name = sub
+                main_category_name = key
+                for product in data[sub_category_name]:
+                    try:
+                        with transaction.atomic():
+                            main_category = Category.objects.get(name=main_category_name)
+                            sub_category = Category.objects.get(name=sub_category_name)
+                            product = Product(name=product['product_name'],
+                                              code=product['code'],
+                                              nutriscore=product['nutriscore_grade'],
+                                              url=product['url'],
+                                              popularity=product['unique_scans_n'])
+                            product.save()
+                            product.category.add(main_category)
+                            product.category.add(sub_category)
+                    except HTTPError:
+                        pass
+                    except URLError:
+                        pass
+                    except KeyError:
+                        pass
+                    except DataError:
+                        pass
+                    except IntegrityError:
+                        pass
 
     def test_resultview_get(self):
         print("\nTEST - RESULTVIEW --> def get()\n")
-        request = self.factory.get('results/', )
-        request.user = self.user
-        response = ResultsView.as_view()(request, user_input='saucisson sec')
-        print("self.assertEqual(response.status_code, 200)")
-        self.assertEqual(response.status_code, 200)
+        request_1 = self.factory.get('results/', data={'recherche': 'saucisson sec'})
+        request_1.user = self.user
+        response_1 = ResultsView.as_view()(request_1)
+        request_2 = self.factory.get('results/', data={'recherche': 'gateau chocolat'})
+        request_2.user = self.user
+        response_2 = ResultsView.as_view()(request_2)
+        print("self.assertEqual(ResultsView.as_view()(request, user_input='saucisson sec').status_code, 200)")
+        self.assertEqual(response_1.status_code, 200)
         print('Assert Done')
-
-    def test_resultview_post(self):
-        print("\nTEST - RESULTVIEW --> def post()\n")
-        request = self.factory.post('results/', )
-        request.user = self.user
-        response = ResultsView.as_view()(request, user_input='saucisson sec')
-        print("self.assertEqual(response.status_code, 302)")
-        self.assertEqual(response.status_code, 302)
+        print("self.assertEqual(ResultsView.as_view()(request, user_input='gateau chocolat').status_code, 200)")
+        self.assertEqual(response_2.status_code, 200)
         print('Assert Done')
 
 
@@ -335,24 +343,23 @@ class ProductViewTests(TestCase):
         self.factory = RequestFactory()
         self.user = User.objects.create_user(username='test',
                                              email='essaitest@gmail.fr',
-                                             password='essaimdp+88',
-                                             is_staff=True)
+                                             password='essaimdp+88')
+        self.test_product = Product(code="5449000000996",
+                                    url="https://fr.openfoodfacts.org/produit/5449000000996/coca-cola",
+                                    nutriscore="e",
+                                    name="Coca-Cola Classic",
+                                    popularity=2802)
+        self.test_product.save()
 
     def test_productview_get(self):
         print("\nTEST - PRODUCTVIEW --> def get()\n")
-        request = self.factory.post('product/', )
+        request = self.factory.get('product/', )
         request.user = self.user
-        response = ProductView.as_view()(request, pk=1)
+        test_product = Product.objects.get(code='5449000000996')
+        response = ProductView.as_view()(request, pk=test_product.id)
         print("self.assertEqual(response.status_code, 200)")
         self.assertEqual(response.status_code, 200)
         print('Assert Done')
-        #  FAIL: test_productview_get (main.tests.ProductViewTests)
-        # ----------------------------------------------------------------------
-        # Traceback (most recent call last):
-        #   File "D:\onedrive\formation opcr\p8\github\application\main\tests.py", line 346, in test_productview_get
-        #     self.assertEqual(response.status_code, 200)
-        # AssertionError: 405 != 200
-# TROUVER POURQUOI HTTP 405, BESOIN DE CREER PRODUIT DANS UNE TABLE ?
 
 
 class TestMentionsView(TestCase):

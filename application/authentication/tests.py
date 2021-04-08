@@ -1,10 +1,8 @@
 from django.test import TestCase, RequestFactory
-from django.urls.base import reverse
 from .models import User
 from .views import RegisterView, ConsultAccountView
 from .forms import RegisterForm
-from unittest import mock
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 
 # Create your tests here.
@@ -49,7 +47,6 @@ class RegisterTest(TestCase):
         print('ASSERT DONE')
 
 
-# @patch.object(RegisterView.post, 'form', autospec=RegisterForm)
 class TestRegisterView(TestCase):
     """
     Test class for AuthenticationView.
@@ -71,15 +68,6 @@ class TestRegisterView(TestCase):
         request = self.factory.post('register/', data={})
         response = RegisterView.as_view()(request)
         self.assertEqual(response.status_code, 302)
-        #RequestFactory ne permet pas de suivre les redirections sinon il faut utiliser self.client()        
-
-    # def test_registerview_post(self):
-    #     print("\nTEST - REGISTERVIEW --> def post()\n")
-    #     with mock.patch('authentication.views.RegisterView.form') as mocked_form:
-    #         mocked_form.return_value = True
-    #         request = self.factory.post(reverse('register'), data={})
-    #         response = RegisterView.as_view()(request)
-    #         self.assertEqual(response.status_code, 200)
 
 
 class TestConsultAccountView(TestCase):

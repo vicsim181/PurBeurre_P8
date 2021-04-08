@@ -3,6 +3,7 @@
 {% block content %}
 
 <!-- Masthead-->
+{% load static %}
 <header class="masthead">
     <div class="container h-100">
         <div class="row h-100 align-items-center justify-content-center text-center">
@@ -20,9 +21,8 @@
                 </a>
             {% if user.is_authenticated and perms.main.view_product %}
                 <div class="col-md-6 offset-md-3">
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form.post }}
+                    <form method="get" action="/results/">
+                        <input class="form-control" type="text" placeholder="Chercher un produit" name="recherche" required>
                         <br>
                         <button type="submit" class="btn btn-info">Rechercher</button>
                     </form>
@@ -57,7 +57,7 @@
                 remplacer les produits
                 aseptisés que j'avais l'habitude d'acheter par de bons produits du terroir Et souvent pour le même
                 prix !"</p>
-            <img src="static/img/colette-tatou-full.png" alt="Portrait Colette">
+            <img src="{% static 'img/colette-tatou-full.png' %}" alt="Portrait Colette">
         </div>
         <div class="text-about">
             <p><u>Remy :</u> "Pour ma part je me rendais déjà dans bien des magasins car j'aime beaucoup me balader,
@@ -67,7 +67,7 @@
                 les aliments vendus. Lorsque Colette m'a demandé si elle pouvait remplacer son Nutella matinal par
                 un aliment plus sain,
                 je savais tout de suite où le trouver. L'idée de Pur Beurre était née !"</p>
-            <img src="static/img/ratatouille.png" alt="Portrait Remy">
+            <img src="{% static 'img/ratatouille.png' %}" alt="Portrait Remy">
         </div>
     </div>
 </section>
@@ -87,7 +87,6 @@
             </div>
             <div class="col-lg-4 mr-auto text-center">
                 <i class="fas fa-envelope fa-3x mb-3 text-muted"></i>
-                <!-- Make sure to change the email address in BOTH the anchor text and the link target below!-->
                 <a class="d-block" href="mailto:contact@yourwebsite.com">contact@purbeurre.kp</a>
             </div>
         </div>
