@@ -36,7 +36,6 @@ class Product(models.Model):
     fat = models.CharField(max_length=10)
     image_url = models.CharField(max_length=100)
     small_image_url = models.CharField(max_length=100)
-    static_url = models.CharField(default='../static/img/', max_length=30)
 
     def __str__(self) -> str:
         return 'product: ' + self.name
