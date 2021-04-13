@@ -63,6 +63,8 @@ On Linux:
 
 Django is a complete framework offering various options, tools and services. Checking its [official documentation](https://docs.djangoproject.com/en/3.1/) is the best way to learn using it.
 
+The functionalities of the application are divided into different Django applications. You can find them in the 'application' folder, they are 'authentication', 'bookmark' and 'main'. There is also a 'pur_beurre' application, holding the main settings of the global application (the project).
+
 Once the files of the application copied on yours, you will need to open the application/pur_beurre/settings.py file.
 
 You can see in the 'INSTALLED_APPS' parameters all the applications installed (obviously), including the created ones: main, bookmark, authentication.
