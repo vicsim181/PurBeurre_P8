@@ -1,9 +1,15 @@
-from bookmark.models import Substitution
-from django.test import TestCase, RequestFactory
-from authentication.models import User
-from main.models import Product
 from .models import Substitution
 from .views import BookmarksView
+from authentication.models import User
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.test import RequestFactory, TestCase
+from main.models import Product
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.firefox.webdriver import WebDriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 
 # Create your tests here.
@@ -157,3 +163,53 @@ class TestBookmarksView(TestCase):
         request = self.factory.post('consult/', data)
         request.user = self.user
         BookmarksView.as_view()(request)
+
+
+# class UserStoriesBookmarkTest(StaticLiveServerTestCase):
+#     """
+#     Bookmark User stories:  user stories about searching a product.
+#     Selenium is used to realise the following tests.
+#     """
+#     fixtures = ['users.json']
+
+#     @classmethod
+#     def setUpClass(cls):
+#         super().setUpClass()
+#         cls.browser = WebDriver()
+#         cls.browser.implicitly_wait(10)
+
+#     @classmethod
+#     def tearDownClass(cls):
+#         cls.browser.quit()
+#         super().tearDownClass()
+
+#     def test_add_bookmark(self):
+#         """
+#         User story: A user logs in, search 'coca cola' and add the first result as a bookmark.
+#         The user then checks its bookmarks.
+#         """
+#         self.browser.get(self.live_server_url)
+#         self.browser.maximize_window()
+#         self.browser.find_element_by_id('log in').click()
+#         username_input = self.browser.find_element_by_css_selector('#id_username')
+#         username_input.send_keys("victor@gmail.fr")
+#         password_input = self.browser.find_element_by_css_selector('#id_password')
+#         password_input.send_keys("blabla75")
+#         self.browser.find_element_by_id('confirmer').click()
+#         self.browser.find_element_by_xpath('//*[@id="page"]/div[2]/header/div/div/div[2]/div/form/input').send_keys('coca cola')
+#         self.browser.find_element_by_xpath('//*[@id="page"]/div[2]/header/div/div/div[2]/div/form/button').click()
+#         save_button = self.browser.find_element_by_xpath('/html/body/div[1]/div[2]/div[2]/div[1]/form/button')
+#         actions = ActionChains(self.browser)
+#         actions.move_to_element(save_button)
+#         actions.perform()
+#         # ActionChains(self.browser).move_to_element(WebDriverWait(self.browser, 20).until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div[2]/div[2]/div[1]/form/button")))).click().perform()
+#         self.browser.find_element_by_xpath('/html/body/div[1]/div[2]/div[2]/div[1]/form/button').click()
+#         self.browser.find_element_by_xpath('/html/body/div[1]/div[1]/nav/div/ul[2]/li[2]/a').click()
+#         print("assert 'Coca Cola remplacé par Coca-Cola Zéro' in self.browser.page_source")
+#         assert 'Coca Cola remplacé par Coca-Cola Zéro' in self.browser.page_source
+#         print('ASSERT DONE')
+
+
+# Echec à déplacer la partie visible du site sur la première suggestion et cliquer sur le bouton sauvegarder.
+# selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element <button type="submit" id="button">...</button> is not clickable at point (356, 948). Other element would receive the click: <a href="/mentionslegales/">...</a>
+# Différentes solutions cherchées mais aucune ne fonctionne, ni sur Firefox ni sur Chrome

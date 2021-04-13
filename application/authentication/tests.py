@@ -1,8 +1,11 @@
+import time
 from django.test import TestCase, RequestFactory
 from .models import User
 from .views import RegisterView, ConsultAccountView
 from .forms import RegisterForm
 from unittest.mock import patch
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from selenium.webdriver.firefox.webdriver import WebDriver
 
 
 # Create your tests here.
@@ -88,3 +91,92 @@ class TestConsultAccountView(TestCase):
         print("self.assertEqual(response.status_code, 200)")
         self.assertEqual(response.status_code, 200)
         print('Assert Done')
+
+
+class UserStoriesAuthenticationTest(StaticLiveServerTestCase):
+    """
+    Authentication User stories: 4 user stories concerning the authentication part of the application.
+    Selenium is used for the following tests.
+    """
+    fixtures = ['users.json']
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.browser = WebDriver()
+        cls.browser.implicitly_wait(10)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.browser.quit()
+        super().tearDownClass()
+
+        # si plusieurs éléments avec le même selector, find_elements_by_tag_name() puis vérifier la taille de la liste.
+        # instance = find_elements_by_tag_name() vérifier la taille de instance pour vérifier
+
+    def test_register(self):
+        """
+        Test the registration process by creating a new user.
+        """
+        self.browser.get(self.live_server_url)
+        self.browser.maximize_window()
+        self.browser.find_element_by_id('log in').click()
+        self.browser.find_element_by_id('register').click()
+        self.browser.find_element_by_xpath('//*[@id="id_first_name"]').send_keys('essai')
+        self.browser.find_element_by_xpath('//*[@id="id_last_name"]').send_keys('TEST')
+        self.browser.find_element_by_xpath('//*[@id="id_email"]').send_keys('essai@gmail.com')
+        self.browser.find_element_by_css_selector('#id_password1').send_keys('lala+89@')
+        self.browser.find_element_by_css_selector('#id_password2').send_keys('lala+89@')
+        self.browser.find_element_by_xpath('//*[@id="page"]/div[2]/div/div/div/form/button').click()
+        print("assert 'Vous êtes maintenant enregistré, bienvenue !' in self.browser.page_source")
+        assert 'Vous êtes maintenant enregistré, bienvenue !' in self.browser.page_source
+        print("ASSERT DONE")
+
+    def test_login_when_registered(self):
+        """
+        Test the login process with an existing user.
+        """
+        self.browser.get(self.live_server_url)
+        self.browser.maximize_window()
+        self.browser.find_element_by_id('log in').click()
+        username_input = self.browser.find_element_by_css_selector('#id_username')
+        username_input.send_keys("victor@gmail.fr")
+        password_input = self.browser.find_element_by_css_selector('#id_password')
+        password_input.send_keys("blabla75")
+        self.browser.find_element_by_id('confirmer').click()
+        print("assert 'No results found.' not in self.browser.page_source")
+        assert 'No results found.' not in self.browser.page_source
+        print("ASSERT DONE")
+
+    def test_login_without_registered(self):
+        """
+        Test the login process with an non existing user.
+        """
+        self.browser.get(self.live_server_url)
+        self.browser.maximize_window()
+        self.browser.find_element_by_id('log in').click()
+        username_input = self.browser.find_element_by_css_selector('#id_username')
+        username_input.send_keys("inconnu@gmail.fr")
+        password_input = self.browser.find_element_by_css_selector('#id_password')
+        password_input.send_keys("blabli95")
+        self.browser.find_element_by_id('confirmer').click()
+        print("assert 'No results found.' in self.browser.page_source")
+        assert 'Saisissez un email et un mot de passe valides. Remarquez que chacun de ces champs est sensible à la casse (différenciation des majuscules/minuscules).' in self.browser.page_source
+        print("ASSERT DONE")
+
+    def test_login_then_logout(self):
+        """
+        Test the login process and logout with an existing user.
+        """
+        self.browser.get(self.live_server_url)
+        self.browser.maximize_window()
+        self.browser.find_element_by_id('log in').click()
+        username_input = self.browser.find_element_by_css_selector('#id_username')
+        username_input.send_keys("victor@gmail.fr")
+        password_input = self.browser.find_element_by_css_selector('#id_password')
+        password_input.send_keys("blabla75")
+        self.browser.find_element_by_id('confirmer').click()
+        self.browser.find_element_by_xpath('//*[@id="log out"]').click()
+        print("assert 'Vous êtes déconnecté.' in self.browser.page_source")
+        assert 'Vous êtes déconnecté.' in self.browser.page_source
+        print("ASSERT DONE")

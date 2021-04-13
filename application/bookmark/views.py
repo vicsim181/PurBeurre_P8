@@ -25,7 +25,6 @@ class BookmarksView(UpdateView):
             data[Product.retrieve_prod_with_pk(bookmark.target_product_id)] = [
                  Product.retrieve_prod_with_pk(bookmark.source_product_id),
                  bookmark.date_creation]
-        # url = '../../static/img/'
         context = {'data': data}
         return render(request, self.template_name, context)
 
@@ -37,7 +36,6 @@ class BookmarksView(UpdateView):
         recherche = self.request.POST.get('recherche')
         next = self.request.POST.get('next', '/')
         retour = f'{next}?recherche={recherche}'
-        print(retour)
         if aim == 'add':
             Substitution.save_bookmark(source_id, target_id, current_user.id)
             return redirect(retour)

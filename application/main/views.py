@@ -28,12 +28,10 @@ class ResultsView(TemplateView):
         else:
             suggestions = None
             user_favs = []
-        # url = '../static/img/'
         context['user_favs'] = user_favs
         context['product'] = product
         context['suggestions'] = suggestions
         context['category'] = category
-        # context['url_image'] = url
         return context
 
 
