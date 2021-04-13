@@ -3,31 +3,49 @@
 ## What is the objective of this website?
 In this website the goal is to allow the user to find healthier products than the ones he already consumes.
 
-## How does it work?
+## **How does it work?**
 
 The application behind the website uses data collected on the [OpenFoodFacts platform](https://fr.openfoodfacts.org/), using its API. 
 All the collected data is saved in a database dedicated to this application.
 The user needs to connect in order to look for a product.
+
+![home when not logged in](application/static/img/readme/homeloggedout.png)
+
+The user can log in through the appropriate page:
+
+![log in](application/static/img/readme/login.png)
+
+If the user is not registered yet, he can do so by clicking on the link under the login part.
+
+![register](application/static/img/readme/register.png)
+
 Once connected, the user can search for a product on the main page:
 
 ![home](application/static/img/readme/home.png)
 
 To find the wanted product, the terms of the request need a certain accuracy, using the name of the product and/or its brand.
-Only some categories of product are available, they can be found in the 'settings.json' located in the folder application/main/management/commands.
+To see the categories available, click on the link 'Consultez ici les catégories de produits disponibles.'
+
+The product which matches the most the request will appear.
+
+![result](application/static/img/readme/search.png)
 
 Once the product found, the application will propose a maximum of 6 alternative products with a better or same nutriscore.
+
+![suggestions](application/static/img/readme/suggestions.png)
+
 The user can click on "Sauvegarder" under each of them and a bookmark will be saved.
 
-![saving](application/static/img/readme/saving.png)
+![saved](application/static/img/readme/saved.png)
 
 Each bookmark represents the searched product replaced by the chosen alternative product. The bookmarks can be consulted in the special interface by clicking on the carrot icon on the top right in the navigation bar.
 
-![bookmarks](application/static/img/readme/bookmarks.png)
+![bookmarks](application/static/img/readme/bookmark.png)
 
 The bookmarks can be deleted by clicking "supprimer" on their right part.
 
 
-# **How to install the app?**
+## **How to install the app?**
 
 You will need Django in order to use this applicationt will come automatically when extracting the requirements.
 
@@ -42,7 +60,7 @@ On Linux:
 > pip3 install -r requirements.txt
 ```
 
-## Django settings
+### Django settings
 
 Django is a complete framework offering various options, tools and services. Checking its [official documentation](https://docs.djangoproject.com/en/3.1/) is the best way to learn using it.
 
@@ -61,7 +79,7 @@ The name, user and its password are parameters you define in your own database s
 
 Another setting you might want to modify is "TIME ZONE = 'Europe/Paris' " located at line 123, in case it doesn't match with your time zone.
 
-## The database
+### The database
 
 **I chose PostgreSQL for this project but Django can work with other systems, although deploying the project on Heroku is only possible when using PostgreSQL.**
 
@@ -156,7 +174,7 @@ Once the database is fed, a confirmation message will appear on the terminal ind
 An entry will created in the "history" table saving the date and page used for the last feeding of the database.
 If you use 'db_feed.py' again after, the following page will be asked to Openfoodfacts, so the results show differents products than the ones already saved.
 
-## The program
+### The program
 
 How is the program organized?
 As many Django project, it contains different applications, which holds different models and scripts.
