@@ -98,8 +98,8 @@ check the url passed in requests and its parameters.')
             product.save()
             product.category.add(main_category)
             product.category.add(sub_category)
-            urlreq.urlretrieve(product.image_url, "static/img/products/" + raw_product['code'] + '.jpg')
-            urlreq.urlretrieve(product.small_image_url, "static/img/products_small/" + raw_product['code'] + '.jpg')
+            urlreq.urlretrieve(product.image_url, "../static/img/products/" + raw_product['code'] + '.jpg')
+            urlreq.urlretrieve(product.small_image_url, "../static/img/products_small/" + raw_product['code'] + '.jpg')
             if "stores_tags" in raw_product and raw_product['stores_tags'] != []:
                 for store_element in raw_product['stores_tags']:
                     for regex in dict:
