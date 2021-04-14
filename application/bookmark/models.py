@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.conf import settings
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-from main.models import Product
+from application.main.models import Product
 
 
 # Create your models here.
