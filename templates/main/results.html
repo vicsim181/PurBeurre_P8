@@ -7,7 +7,7 @@
 <div class="result bd-highlight">
         {% if product %}
             <div class="d-flex bd-highlight justify-content-center">
-                <img src="{% static 'img/' %}products/{{ product.code }}.jpg" />
+                <img src="{{ product.image_url }}" />
             </div>
             <div class="d-flex bd-highlight justify-content-center">
                 <a href="{% url 'product_detail' pk=product.id %}"><h2>{{ product.name.title }}</h2></a>
@@ -26,7 +26,7 @@
             {% for suggestion in suggestions %}
                 <div class="mx-5 mb-5 p-3 suggestion">
                     <a href="{% url 'product_detail' pk=suggestion.id %}">
-                        <img src="{% static 'img/' %}products_small/{{suggestion.code}}.jpg"/>
+                        <img src="{{suggestion.small_image_url}}"/>
                         <p class="p-2">{{ suggestion.name.title }}</p>
                         <img src="{% static 'img/' %}nutri_{{ suggestion.nutriscore }}.png">
                     </a>

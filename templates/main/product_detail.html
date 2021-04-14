@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{% static 'css/detail.css' %}">
 <div class="page-section body">
     <div class="header">
-        <img src="{% static 'img/' %}products/{{ product.code }}.jpg">
+        <img src="{{ product.image_url }}">
     </div>
     <br>
     <div class="title">
