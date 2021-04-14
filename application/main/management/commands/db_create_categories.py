@@ -14,7 +14,7 @@ class Command(BaseCommand):
         """
         unknown = Store(name="Lieu d'achat non précisé")
         unknown.save()
-        with open('main/management/commands/settings.json', 'r') as settings:
+        with open('application/main/management/commands/settings.json', 'r') as settings:
             data = json.load(settings)
         categories = data['categories']
         for main_category in categories:

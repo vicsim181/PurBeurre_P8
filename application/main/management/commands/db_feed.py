@@ -44,7 +44,7 @@ class Command(BaseCommand):
             page = last_page.page_number + 1
         except ObjectDoesNotExist:
             page = 1
-        with open('main/management/commands/settings.json', 'r') as settings:
+        with open('application/main/management/commands/settings.json', 'r') as settings:
             self.data = json.load(settings)
         categories_settings = self.data['categories']
         self.url = "https://fr.openfoodfacts.org/cgi/search.pl?json=1"
@@ -127,6 +127,6 @@ check the url passed in requests and its parameters.')
         except IntegrityError:
             pass
         except HTTPError:
-                pass
+            pass
         except URLError:
             pass

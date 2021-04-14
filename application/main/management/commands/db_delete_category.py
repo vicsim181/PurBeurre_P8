@@ -13,7 +13,7 @@ class Command(LabelCommand):
 
         """
         self.category = category.lower()
-        with open('main/management/commands/settings.json', 'r') as settings:
+        with open('application/main/management/commands/settings.json', 'r') as settings:
             data = json.load(settings)
         self.categories = data['categories']
         self.categ_type = None
