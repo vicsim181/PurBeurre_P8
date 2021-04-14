@@ -9,12 +9,12 @@ from application.bookmark.models import Substitution
 
 # Create your views here.
 class HomeView(FormView):
-    template_name = 'main/index.html'
+    template_name = 'application/main/index.html'
     form_class = forms.Form
 
 
 class ResultsView(TemplateView):
-    template_name = 'main/results.html'
+    template_name = 'application/main/results.html'
 
     def get_context_data(self, **kwargs):
         context = super(ResultsView, self).get_context_data(**kwargs)
@@ -36,7 +36,7 @@ class ResultsView(TemplateView):
 
 
 class ProductView(DetailView):
-    template_name = 'main/product_detail.html'
+    template_name = 'application/main/product_detail.html'
     model = Product
 
     def get(self, request, pk):
@@ -48,11 +48,11 @@ class ProductView(DetailView):
 
 
 class MentionsView(TemplateView):
-    template_name = 'mentions.html'
+    template_name = 'application/mentions.html'
 
 
 class CategoriesView(TemplateView):
-    template_name = 'main/categories.html'
+    template_name = 'application/main/categories.html'
 
     def get(self, request):
         with open('main/management/commands/settings.json', 'r') as settings:
