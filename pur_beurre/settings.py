@@ -33,9 +33,9 @@ ALLOWED_HOSTS = ['.herokuapps.com', 'localhost', '127.0.0.1:8000']
 # Application definition
 
 INSTALLED_APPS = [
-    'application.main.apps.MainConfig',
-    'application.bookmark.apps.BookmarkConfig',
-    'application.authentication.apps.AuthenticationConfig',
+    'main.apps.MainConfig',
+    'bookmark.apps.BookmarkConfig',
+    'authentication.apps.AuthenticationConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
