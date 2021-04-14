@@ -1,6 +1,6 @@
 import json
 from django.core.management.base import LabelCommand, CommandError
-from main.models import Category, Product, Store
+from application.main.models import Category, Product, Store
 
 
 class Command(LabelCommand):

@@ -1,7 +1,7 @@
 import json
 # from re import sub
 from django.core.management.base import BaseCommand, CommandError
-from main.models import Category, Store
+from application.main.models import Category, Store
 
 
 class Command(BaseCommand):

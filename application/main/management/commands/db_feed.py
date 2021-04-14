@@ -9,7 +9,7 @@ import re
 from django.core.management.base import BaseCommand
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from main.models import Category, Product, Store, History
+from application.main.models import Category, Product, Store, History
 
 
 class Command(BaseCommand):
