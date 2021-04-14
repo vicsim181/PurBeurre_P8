@@ -4,7 +4,7 @@ from django.views.generic import TemplateView, DetailView
 from django.views.generic.edit import FormView
 from django import forms
 from .models import Product
-from bookmark.models import Substitution
+from application.bookmark.models import Substitution
 
 
 # Create your views here.

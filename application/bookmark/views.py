@@ -1,5 +1,5 @@
 from .models import Substitution
-from main.models import Product
+from application.main.models import Product
 from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
