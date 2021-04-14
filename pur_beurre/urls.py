@@ -18,8 +18,8 @@ from django.conf.urls import url
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('main.urls'), name="home"),
+    path('', include('application.main.urls'), name="home"),
     url('admin/', admin.site.urls),
-    url('user/', include('authentication.urls'), name="user"),
-    url('bookmark/', include('bookmark.urls'), name='bookmarks'),
+    url('user/', include('application.authentication.urls'), name="user"),
+    url('bookmark/', include('application.bookmark.urls'), name='bookmarks'),
 ]
