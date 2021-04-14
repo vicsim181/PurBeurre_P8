@@ -9,7 +9,7 @@ from application.bookmark.models import Substitution
 
 # Create your views here.
 class HomeView(FormView):
-    template_name = 'application/main/index.html'
+    template_name = 'main/index.html'
     form_class = forms.Form
 
 
