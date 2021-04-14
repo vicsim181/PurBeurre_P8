@@ -48,11 +48,11 @@ class ProductView(DetailView):
 
 
 class MentionsView(TemplateView):
-    template_name = 'main/mentions.html'
+    template_name = 'mentions.html'
 
 
 class CategoriesView(TemplateView):
-    template_name = 'main/categories.html'
+    template_name = 'categories.html'
 
     def get(self, request):
         with open('main/management/commands/settings.json', 'r') as settings:
