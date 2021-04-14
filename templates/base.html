@@ -36,7 +36,7 @@
                         </a>
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a class="nav-link js-scroll-trigger" href="{% url 'home' %}">
+                                <a class="nav-link js-scroll-trigger" href="{% url 'main:home' %}">
                                     <button type='submit' id="button"><span>Rechercher</span></button>
                                 </a>
                             </li>
@@ -44,21 +44,21 @@
                         <ul class="navbar-nav ml-auto liste">
                             {% if user.is_authenticated %}
                             <li class="nav-item">
-                                <a id="personal account" class="nav-link js-scroll-trigger" href="{% url 'account' %}">
+                                <a id="personal account" class="nav-link js-scroll-trigger" href="{% url 'authentication:account' %}">
                                     <i class="fa fa-user fa-2x icon"></i>
                                 </a>
                             </li>
                             <li class="nav-item ml-4">
-                                <a id="bookmarks" class="nav-link js-scroll-trigger" href="{% url 'consult' %}">
+                                <a id="bookmarks" class="nav-link js-scroll-trigger" href="{% url 'bookmark:consult' %}">
                                     <img src="{% static 'img/bookmarks.png' %}" alt="" class="icon-carrot"></a>
                             </li>
                             <li class="nav-item ml-4 mr-4">
-                                <a id="log out" class="nav-link js-scroll-trigger" href="{% url 'logout' %}"><i
+                                <a id="log out" class="nav-link js-scroll-trigger" href="{% url 'authentication:logout' %}"><i
                                         class="fa fa-sign-out-alt fa-2x icon"></i></a>
                             </li>
                             {% else %}
                             <li class="nav-item">
-                                <a id="log in" class="nav-link js-scroll-trigger" href="{% url 'login' %}">
+                                <a id="log in" class="nav-link js-scroll-trigger" href="{% url 'authentication:login' %}">
                                     Me connecter
                                 </a>
                             </li>
