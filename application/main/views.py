@@ -52,7 +52,7 @@ class MentionsView(TemplateView):
 
 
 class CategoriesView(TemplateView):
-    template_name = 'categories.html'
+    template_name = 'main/categories.html'
 
     def get(self, request):
         with open('application/main/management/commands/settings.json', 'r') as settings:
