@@ -10,7 +10,7 @@
         <div class="bookmarks">
             <div class="mx-5 suggestion">
                 <a href="{% url 'product_detail' key.id %}">
-                    <img src="{% static 'img/' %}products_small/{{value.0.code}}.jpg" />
+                    <img src="{{value.0.small_image_url}}" />
                     <p class="p-2">{{ value.0.name.title }}</p>
                     <img src="{% static 'img/' %}nutri_{{ value.0.nutriscore }}.png">
                     <p></p>
@@ -21,7 +21,7 @@
             </div>
             <div class="mx-5 suggestion">
                 <a href="{% url 'product_detail' value.0.id %}">
-                    <img src="{% static 'img/' %}products_small/{{key.code}}.jpg" />
+                    <img src="{{key.small_image_url}}" />
                     <p class="p-2">{{ key.name.title }}</p>
                     <img src="{% static 'img/' %}nutri_{{ key.nutriscore }}.png">
                     <p></p>
