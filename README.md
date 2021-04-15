@@ -185,10 +185,16 @@ The models are what define the objects saved in the database. The products have 
 They can be found in the 'models.py' in each app. Their creation in SQL is made through the migrations scripts and the ORM system of Django. A special command allows you to check the SQL statements for a migration, check the migrations documentation (given previously).
 
 Django works with the MVT (Model View Template) organization.
-That is also how this program is working, depending on what action the user wants to do, a View will be called and will itself call the appropriate actions on the models and display the corresponding template.
+That is also how this program is working, depending on what action the user wants to do, a View will be called and will itself call the appropriate actions on the Models and display the corresponding Template with the relevant informations.
+The Models define the objects that will be stored in the database, their attributes and also some methods that will be called by the Views.
 
 The 'main' application manages what is related to the products, categories, stores and the history of feeding the database.
 The 'authentication' application manages what is related to the users.
 The 'bookmark' application manages what is related to the bookmarks (favorites).
 
 Relations and dependencies can exist between those applications. 
+
+### Deployment
+
+This version of the application is currently hosted by [Heroku](https://www.heroku.com/).
+If you wish to use it as well, check the official documentation on their website.
