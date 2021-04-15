@@ -10,38 +10,38 @@ The application behind the website uses data collected on the [OpenFoodFacts pla
 All the collected data is saved in a database dedicated to this application.
 The user needs to connect in order to look for a product.
 
-![home when not logged in](application/static/img/readme/homeloggedout.png)
+![home when not logged in](static/img/readme/homeloggedout.png)
 
 The user can log in through the appropriate page:
 
-![log in](application/static/img/readme/login.png)
+![log in](static/img/readme/login.png)
 
 If the user is not registered yet, he can do so by clicking on the link under the login part.
 
-![register](application/static/img/readme/register.png)
+![register](static/img/readme/register.png)
 
 Once connected, the user can search for a product on the main page:
 
-![home](application/static/img/readme/home.png)
+![home](static/img/readme/home.png)
 
 To find the wanted product, the terms of the request need a certain accuracy, using the name of the product and/or its brand.
 To see the categories available, click on the link 'Consultez ici les catégories de produits disponibles.'
 
 The product which matches the most the request will appear.
 
-![result](application/static/img/readme/search.png)
+![result](static/img/readme/search.png)
 
 Once the product found, the application will propose a maximum of 6 alternative products with a better or same nutriscore.
 
-![suggestions](application/static/img/readme/suggestions.png)
+![suggestions](static/img/readme/suggestions.png)
 
 The user can click on "Sauvegarder" under each of them and a bookmark will be saved.
 
-![saved](application/static/img/readme/saved.png)
+![saved](static/img/readme/saved.png)
 
 Each bookmark represents the searched product replaced by the chosen alternative product. The bookmarks can be consulted in the special interface by clicking on the carrot icon on the top right in the navigation bar.
 
-![bookmarks](application/static/img/readme/bookmark.png)
+![bookmarks](static/img/readme/bookmark.png)
 
 The bookmarks can be deleted by clicking "supprimer" on their right part.
 
