@@ -1,5 +1,12 @@
 {
     "categories": {
+        "soda": ["soda cola",
+                 "limonade",
+                 "soda fruits"],
+        "jus de fruits": ["jus d'orange",
+                          "jus de pomme",
+                          "jus multifruits",
+                          "jus de raisin"],
         "fromage": ["fromage de vache",
                     "fromage de chevre",
                     "fromage bleu",
@@ -18,18 +25,11 @@
         "biscuit": ["biscuit chocolat",
                     "biscuit beurre",
                     "biscuit fruits"],
-        "soda": ["soda cola",
-                 "limonade",
-                 "soda fruits"],
         "charcuterie": ["jambon blanc",
                         "saucisson sec",
                         "chorizo",
                         "jambon serrano",
-                        "jambon parme"],
-        "jus de fruits": ["jus d'orange",
-                          "jus de pomme",
-                          "jus multifruits",
-                          "jus de raisin"]
+                        "jambon parme"]
     },     
     "page_size": 100,
     "fields": [
