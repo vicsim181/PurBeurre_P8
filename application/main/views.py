@@ -52,7 +52,6 @@ class ProductView(DetailView):
         product = Product.objects.get(id=pk)
         stores = product.store.all()
         product_stores = [store.name for store in stores]
-        print('product_stores: ' + str(product_stores))
         return render(request, self.template_name, locals())
 
 

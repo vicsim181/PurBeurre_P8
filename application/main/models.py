@@ -22,6 +22,9 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    """
+    Class defining the model of the Product object and its methods.
+    """
     code = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=100)
     nutriscore = models.CharField(max_length=1)
@@ -123,5 +126,12 @@ class Product(models.Model):
 
 
 class History(models.Model):
+    """
+    Class defining the model of the databse feeding history.
+    Each time the command manage.py db_feed is called, a history object is created with the OpenFoodFacts request page_number used.
+    The first feed ever of the database will look for page 1 when sending a request to OpenFoodFacts.
+    The second feed will ask the page 2, the third page 3 etc.
+    Each history object also has the date and time of the moment it's completed.
+    """
     page_number = models.IntegerField(primary_key=True)
     date = models.DateTimeField(default=timezone.now)
