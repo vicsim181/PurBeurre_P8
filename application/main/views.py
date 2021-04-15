@@ -54,7 +54,7 @@ class MentionsView(TemplateView):
 class CategoriesView(TemplateView):
     template_name = 'categories.html'
 
-    def get(self):
+    def get(self, request):
         with open('application/main/management/commands/settings.json', 'r') as settings:
             data = json.load(settings)
         categories = data['categories']
