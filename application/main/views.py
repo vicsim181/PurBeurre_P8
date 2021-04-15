@@ -58,4 +58,4 @@ class CategoriesView(TemplateView):
         with open('application/main/management/commands/settings.json', 'r') as settings:
             data = json.load(settings)
         categories = data['categories']
-        return render(self.template_name, locals())
+        return render(request, self.template_name, locals())
