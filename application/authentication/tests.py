@@ -111,9 +111,6 @@ class UserStoriesAuthenticationTest(StaticLiveServerTestCase):
         cls.browser.quit()
         super().tearDownClass()
 
-        # si plusieurs éléments avec le même selector, find_elements_by_tag_name() puis vérifier la taille de la liste.
-        # instance = find_elements_by_tag_name() vérifier la taille de instance pour vérifier
-
     def test_register(self):
         """
         Test the registration process by creating a new user.

@@ -3,6 +3,9 @@ from django.db import models
 
 
 class User(AbstractUser):
+    """
+    Custom model class of User.
+    """
     username = models.CharField(default='', max_length=20)
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=50)

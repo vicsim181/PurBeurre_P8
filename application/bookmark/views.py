@@ -12,12 +12,15 @@ User = get_user_model()
 # Create your views here.
 class BookmarksView(UpdateView):
     """
-    ...
+    Class holding the views of the bookmark application.
     """
     template_name = 'bookmark/bookmarks.html'
     model = Substitution
 
     def get(self, request):
+        """
+        Get function, displays the bookmarks if there are some.
+        """
         current_user = request.user
         bookmarks = Substitution.get_bookmarks_by_user(current_user.id)
         data = {}
@@ -29,6 +32,9 @@ class BookmarksView(UpdateView):
         return render(request, self.template_name, context)
 
     def post(self, *args, **kwargs):
+        """
+        Post function, add or delete a bookmark depending on the user request.
+        """
         aim = self.request.POST.get('aim')
         current_user = self.request.user
         source_id = self.request.POST.get('product_id')
