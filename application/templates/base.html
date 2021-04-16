@@ -31,30 +31,34 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarResponsive">
-                        <a class="navbar-brand js-scroll-trigger" href="#page-top">
+                        <a class="navbar-brand js-scroll-trigger" href="{% url 'home' %}">
                             <img class="logo" src="{% static 'img/logo_pur_beurre.png' %}" alt=""> Pur Beurre
                         </a>
+                        {% if user.is_authenticated %}
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a class="nav-link js-scroll-trigger" href="{% url 'home' %}">
-                                    <button type='submit' id="button"><span>Rechercher</span></button>
-                                </a>
+                                <form method="get" action="/results/" style="float: right;">
+                                    <input class="form-control" type="text" placeholder="Chercher un produit" name="recherche" required>
+                                </form>
                             </li>
                         </ul>
+                        {% endif %}
                         <ul class="navbar-nav ml-auto liste">
                             {% if user.is_authenticated %}
                             <li class="nav-item">
-                                <a id="personal account" class="nav-link js-scroll-trigger" href="{% url 'authentication:account' %}">
+                                <a id="personal account" class="nav-link js-scroll-trigger" href="{% url 'authentication:account' %}" title="mon compte">
                                     <i class="fa fa-user fa-2x icon"></i>
                                 </a>
                             </li>
                             <li class="nav-item ml-4">
-                                <a id="bookmarks" class="nav-link js-scroll-trigger" href="{% url 'bookmark:consult' %}">
-                                    <img src="{% static 'img/bookmarks.png' %}" alt="" class="icon-carrot"></a>
+                                <a id="bookmarks" class="nav-link js-scroll-trigger" href="{% url 'bookmark:consult' %}" title="mes favoris">
+                                    <img src="{% static 'img/bookmarks.png' %}" alt="" class="icon-carrot">
+                                </a>
                             </li>
                             <li class="nav-item ml-4 mr-4">
-                                <a id="log out" class="nav-link js-scroll-trigger" href="{% url 'authentication:logout' %}"><i
-                                        class="fa fa-sign-out-alt fa-2x icon"></i></a>
+                                <a id="log out" class="nav-link js-scroll-trigger" href="{% url 'authentication:logout' %}" title="me déconnecter">
+                                    <i class="fa fa-sign-out-alt fa-2x icon"></i>
+                                </a>
                             </li>
                             {% else %}
                             <li class="nav-item">
