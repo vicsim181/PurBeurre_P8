@@ -3,7 +3,6 @@ from django.db.utils import DataError
 from django.contrib.auth.models import Group, Permission
 import requests
 import json
-import urllib.request as urlreq
 from urllib.error import HTTPError, URLError
 import re
 from django.core.management.base import BaseCommand

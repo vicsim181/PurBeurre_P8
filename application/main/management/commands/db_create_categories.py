@@ -1,5 +1,5 @@
 import json
-# from re import sub
+from django.db import IntegrityError
 from django.core.management.base import BaseCommand, CommandError
 from application.main.models import Category, Store
 
@@ -12,8 +12,11 @@ class Command(BaseCommand):
         Function handling the process of going through the list of categories.
         It then passes them as argument to create_category for the creation.
         """
-        unknown = Store(name="Lieu d'achat non précisé")
-        unknown.save()
+        try:
+            unknown = Store(name="Lieu d'achat non précisé")
+            unknown.save()
+        except IntegrityError:
+            pass
         with open('application/main/management/commands/settings.json', 'r') as settings:
             data = json.load(settings)
         categories = data['categories']
