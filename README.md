@@ -1,6 +1,7 @@
 # **Pur Beurre, the website allowing you to look for healthier food!**
 
-=======
+======================================================================
+
 In this website the goal is to allow the user to find healthier products than the ones he already consumes.
 
 ## **How does it work?**
