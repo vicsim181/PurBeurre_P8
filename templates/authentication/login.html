@@ -6,7 +6,7 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
 <div class="page-section">
-    <h2 class="text-center">Log in</h2>
+    <h2 class="text-center">Connexion</h2>
     <div class="text-center mb-100">
         <form action="{% url 'authentication:login' %}" method="post">
             {% csrf_token %}
