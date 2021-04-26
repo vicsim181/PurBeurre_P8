@@ -1,4 +1,4 @@
-from django.urls.conf import path, re_path
+from django.urls.conf import path
 from .views import HomeView, ProductView, ResultsView, MentionsView, CategoriesView
 
 urlpatterns = [

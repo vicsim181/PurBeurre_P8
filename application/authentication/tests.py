@@ -1,4 +1,4 @@
-import time
+# import time
 from django.test import TestCase, RequestFactory
 from .models import User
 from .views import RegisterView, ConsultAccountView

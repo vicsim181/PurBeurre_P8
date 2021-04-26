@@ -1,15 +1,15 @@
 from .models import Substitution
 from .views import BookmarksView
 from authentication.models import User
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+# from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import RequestFactory, TestCase
 from main.models import Product
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.firefox.webdriver import WebDriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
+# from selenium.webdriver.common.action_chains import ActionChains
+# from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.firefox.webdriver import WebDriver
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.common.by import By
 
 
 # Create your tests here.
@@ -67,8 +67,10 @@ class BookmarkTests(TestCase):
     def test_specific_bookmark(self):
         print("\nTEST - Bookmark --> def specific_bookmark()\n")
         Substitution.save_bookmark(self.product_source.id, self.product_target.id, self.target_user.id)
-        test_specific_1 = Substitution.specific_bookmark(self.product_source.id, self.product_target.id, self.target_user.id)
-        print("self.assertTrue(Substitution.specific_bookmark(self.product_source.id, self.product_target.id, self.target_user.id))")
+        test_specific_1 = Substitution.specific_bookmark(self.product_source.id, self.product_target.id,
+                                                         self.target_user.id)
+        print("self.assertTrue(Substitution.specific_bookmark(self.product_source.id, self.product_target.id,\
+ self.target_user.id))")
         self.assertTrue(test_specific_1)
         print('ASSERT 1 DONE')
         print("self.assertFalse(Substitution.specific_bookmark(5620, 5621, 12))")

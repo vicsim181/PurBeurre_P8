@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.db.utils import DataError
-from django.contrib.auth.models import Group, Permission
+# from django.contrib.auth.models import Group, Permission
 import requests
 import json
 import urllib.request as urlreq
@@ -127,6 +127,6 @@ check the url passed in requests and its parameters.')
         except IntegrityError:
             pass
         except HTTPError:
-                pass
+            pass
         except URLError:
             pass

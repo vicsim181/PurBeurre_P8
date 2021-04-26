@@ -1,8 +1,8 @@
-import json
-from django.db import IntegrityError, transaction
-from django.db.utils import DataError
+# import json
+# from django.db import IntegrityError, transaction
+# from django.db.utils import DataError
 from django.test import TestCase, RequestFactory
-from urllib.error import HTTPError, URLError
+# from urllib.error import HTTPError, URLError
 from .models import Product, Category, Store
 from .views import HomeView, ResultsView, ProductView, MentionsView, CategoriesView
 from django.core.management import call_command
@@ -27,11 +27,11 @@ class ProductModelTests(TestCase):
         target_1 = '5449000169327'  # Coca Cola zéro sans caféine
         target_2 = '3449860415703'  # Petits Bâtons de Berger Nature
         target_3 = '7622210450029'  # Prince - Biscuits fourrés goût lait choco
-        target_4 = '5000112558272'  # coca-cola
+        target_4 = '5449000267443'  # coca-cola vanille
         request_1 = 'zéro sans coca-cola caféine'
         request_2 = 'berger bâtons petits nature'
         request_3 = 'prince biscuit'
-        request_4 = 'coca cola'
+        request_4 = 'coca vanille cola'
         result_1, cat_1 = Product.retrieve_product(request_1)
         result_2, cat_2 = Product.retrieve_product(request_2)
         result_3, cat_3 = Product.retrieve_product(request_3)
@@ -45,7 +45,7 @@ class ProductModelTests(TestCase):
         print("self.assertEqual(result_3.code, '7622210450029')")
         self.assertEqual(result_3.code, target_3)
         print('assert 3 DONE')
-        print("self.assertEqual(result_4.code, '5000112558272')")
+        print("self.assertEqual(result_4.code, '5449000267443')")
         self.assertEqual(result_4.code, target_4)
         print('assert 4 DONE')
         product_test = Product.objects.get(code=target_3)

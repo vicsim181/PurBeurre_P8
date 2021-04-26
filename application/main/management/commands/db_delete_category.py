@@ -1,10 +1,10 @@
 import json
-from django.core.management.base import LabelCommand, CommandError
-from main.models import Category, Product, Store
+from django.core.management.base import LabelCommand
+from main.models import Category, Product
 
 
 class Command(LabelCommand):
-    help = 'Delete a category from the database.'      
+    help = 'Delete a category from the database.'
 
     def handle_label(self, category, **options):
         """
@@ -55,5 +55,5 @@ class Command(LabelCommand):
             Category.objects.get(name=self.category).delete()
             self.stdout.write("Category: " + self.category + " deleted.")
         else:
-            self.stdout.write('Erreur dans la valeur de self.cat_type. Catégorie ni main ni sub.')    
+            self.stdout.write('Erreur dans la valeur de self.cat_type. Catégorie ni main ni sub.')
         return

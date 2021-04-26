@@ -1,10 +1,8 @@
 from .models import Substitution
 from main.models import Product
 from django.shortcuts import redirect, render
-from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
 from django.contrib.auth import get_user_model
-from django.http import HttpResponseRedirect
 
 User = get_user_model()
 
