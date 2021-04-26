@@ -160,7 +160,7 @@ class UserStoriesAuthenticationTest(StaticLiveServerTestCase):
         password_input = self.browser.find_element_by_css_selector('#id_password')
         password_input.send_keys("blabli95")
         self.browser.find_element_by_id('confirmer').click()
-        print("assert 'No results found.' in self.browser.page_source")
+        print("assert 'Saisissez un email et un mot de passe valides. Remarquez que chacun de ces champs est sensible à la casse (différenciation des majuscules/minuscules).' in self.browser.page_source")
         assert 'Saisissez un email et un mot de passe valides. Remarquez que chacun de ces champs est sensible à la casse (différenciation des majuscules/minuscules).' in self.browser.page_source
         print("ASSERT DONE")
 
