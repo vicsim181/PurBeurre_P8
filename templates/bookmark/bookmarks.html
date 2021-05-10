@@ -9,7 +9,7 @@
         {% for key, value in data.items %}
         <div class="bookmarks">
             <div class="mx-5 suggestion">
-                <a href="{% url 'product_detail' key.id %}">
+                <a href="{% url 'product_detail' value.0.id %}">
                     <img src="{{value.0.small_image_url}}" />
                     <p class="p-2">{{ value.0.name.title }}</p>
                     <img src="{% static 'img/' %}nutri_{{ value.0.nutriscore }}.png">
@@ -20,7 +20,7 @@
                 <p> remplacé par </p>
             </div>
             <div class="mx-5 suggestion">
-                <a href="{% url 'product_detail' value.0.id %}">
+                <a href="{% url 'product_detail' key.id %}">
                     <img src="{{key.small_image_url}}" />
                     <p class="p-2">{{ key.name.title }}</p>
                     <img src="{% static 'img/' %}nutri_{{ key.nutriscore }}.png">
