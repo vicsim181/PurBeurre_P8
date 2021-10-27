@@ -89,7 +89,7 @@ LOGIN_REDIRECT_URL = "home"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'purbeurre',
+        'NAME': 'pur_beurre',
         'USER': 'postgres',
         'PASSWORD': os.environ['POSTGRESQL'],
         'HOST': '',

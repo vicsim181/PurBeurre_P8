@@ -49,6 +49,7 @@ class Migration(migrations.Migration):
                 ('fat', models.CharField(max_length=10)),
                 ('image_url', models.CharField(max_length=100)),
                 ('small_image_url', models.CharField(max_length=100)),
+                ('static_url', models.CharField(default='static/img/', max_length=30)),
                 ('category', models.ManyToManyField(to='main.Category')),
                 ('store', models.ManyToManyField(to='main.Store')),
             ],
