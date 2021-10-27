@@ -1,12 +1,12 @@
 # **Pur Beurre, the website allowing you to look for healthier food!**
 
-Check the main branch of the project to check the documentation.
-=======
+# Check the main branch of the project to check the documentation.
+
 In this website the goal is to allow the user to find healthier products than the ones he already consumes.
 
 ## **How does it work?**
 
-The application behind the website uses data collected on the [OpenFoodFacts platform](https://fr.openfoodfacts.org/), using its API. 
+The application behind the website uses data collected on the [OpenFoodFacts platform](https://fr.openfoodfacts.org/), using its API.
 All the collected data is saved in a database dedicated to this application.
 The user needs to connect in order to look for a product.
 
@@ -45,7 +45,6 @@ Each bookmark represents the searched product replaced by the chosen alternative
 
 The bookmarks can be deleted by clicking "supprimer" on their right part.
 
-
 ## **How to install the app?**
 
 You will need Django in order to use this applicationt will come automatically when extracting the requirements.
@@ -53,10 +52,13 @@ You will need Django in order to use this applicationt will come automatically w
 Fork this repository or download the files and install the dependencies with:
 
 On Windows:
+
 ```bash
 > pip install -r requirements.txt
 ```
+
 On Linux:
+
 ```bash
 > pip3 install -r requirements.txt
 ```
@@ -91,25 +93,33 @@ Once you have defined the name of your database, the user and its password, you 
 First of all be sure to apply the migrations of the models into your database using the appropriate command:
 
 On Windows:
+
 ```bash
 > py manage.py makemigrations
 ```
+
 On Linux:
+
 ```bash
 > python manage.py makemigrations
 ```
+
 You should see a '0001_initial.py' file created in the 'migrations' folders of each application.
 
 You can then confirm the migrations and apply them to the database by using the following:
 
 On Windows:
+
 ```bash
 > py manage.py migrate
 ```
+
 On Linux:
+
 ```bash
 > python manage.py migrate
 ```
+
 For more informations, once again, refer to the [Django documentation](https://docs.djangoproject.com/en/3.1/topics/migrations/).
 
 Once the migrations effective the tables have been created in your database.
@@ -118,16 +128,19 @@ You will need to use 2 different files located in the folder application/main/ma
 The first file is 'db_create_categories.py', it will create the categories located in the 'settings.py' (that can also be found in the folder application/main/management/commands) into the 'category' table of your database.
 
 On Windows:
+
 ```bash
 > py manage.py db_create_categories
 ```
+
 On Linux:
+
 ```bash
 > python manage.py db_create_categories
 ```
 
-
 If you wish to modify the categories fed into the table, modify them in the 'settings.py' file. Take note that they are divided like follow:
+
 ```json
  "Main category 1": ["Sub category 1",
                      "Sub category 2",
@@ -145,13 +158,17 @@ But ordering them this way allows us to settle each product to be referenced in 
 **Example to delete the category soda:**
 
 On Windows:
+
 ```bash
 > py manage.py db_delete_category soda
 ```
+
 On Linux:
+
 ```bash
 > python manage.py db_delete_category soda
 ```
+
 (if the category has two words in its name, you can indicate it like this 'category name')
 **Only after you can manually delete it from the 'settings.py'.**
 **If the deleted category is a Main category be sure to delete all its sub categories.**
@@ -162,17 +179,20 @@ Now the categories are ready to receive their products!
 
 To feed the rest of the database use the file 'db_feed.py'. A request to the Openfoodfacts API with each of the sub categories as search term will be sent.
 The number of products asked to the Openfoodfacts for each sub category is set in the "page_size" parameter in 'settings.py'.
-As well as the fields needed for each products in the parameter "fields". 
+As well as the fields needed for each products in the parameter "fields".
 These parameters can be modified as you wish, note that a field added to the 'fields' list that doesn't have its place in the Product model can't be added to the table.
 On Windows:
 
 ```bash
 > py manage.py db_feed
 ```
+
 On Linux:
+
 ```bash
 > python manage.py db_feed
 ```
+
 Once the database is fed, a confirmation message will appear on the terminal indicating the date and the page.
 An entry will created in the "history" table saving the date and page used for the last feeding of the database.
 If you use 'db_feed.py' again after, the following page will be asked to Openfoodfacts, so the results show differents products than the ones already saved.
@@ -191,4 +211,4 @@ The 'main' application manages what is related to the products, categories, stor
 The 'authentication' application manages what is related to the users.
 The 'bookmark' application manages what is related to the bookmarks (favorites).
 
-Relations and dependencies can exist between those applications. 
+Relations and dependencies can exist between those applications.
